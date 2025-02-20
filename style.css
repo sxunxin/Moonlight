@@ -1,0 +1,207 @@
+/* 기본 스타일 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif; /* 글꼴 설정 */
+    overflow: hidden;
+}
+
+/* 밤하늘 배경 */
+.sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80vh;
+    background: linear-gradient(to top, #1b041e, #000000);
+    z-index: -1;
+}
+
+/* 땅 배경 */
+.ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    background-color: #183918;
+    z-index: -1;
+}
+
+/* To-Do 리스트 헤더 */
+.todo-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* 공통 버튼 스타일 */
+.button-common {
+    background-color: #5e4a8f;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼 호버 스타일 */
+.button-common:hover {
+    background-color: #4a3870;
+}
+
+/* 할 일 추가 버튼 */
+.add-todo {
+    margin-bottom: 20px;
+}
+
+/* "오늘 하루 끝내기" 버튼 */
+.end-day {
+    margin-bottom: 20px;
+}
+
+/* 투두 리스트 스타일 */
+.todo-list {
+    position: fixed;
+    top: 50%;
+    right: -52.5%; /* 화면 밖에 위치 */
+    transform: translateY(-50%); /* 세로 중앙 정렬 */
+    width: 50vw;
+    height: 70vh;
+    background-color: rgba(21, 0, 21, 0.9); /* 반투명 보라색 */
+    border-radius: 10px 0 0 10px; /* 왼쪽 위와 아래는 둥글고, 오른쪽은 직각 */
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+    color: white;
+    z-index: 2;
+    transition: right 0.5s ease; /* 부드럽게 오른쪽으로 슬라이딩 */
+}
+
+/* 투두리스트가 오른쪽 끝에서 나오는 애니메이션 */
+.todo-list.show {
+    right: 0; /* 오른쪽 끝에 위치하도록 설정 */
+}
+
+/* 왼쪽 토글 버튼 스타일 (반달 모양) */
+.toggle-todo-list {
+    position: absolute;
+    left: -39px; /* 반달이 반쯤 나와 있도록 조정 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px; /* 반달 형태를 위한 너비 */
+    height: 80px; /* 높이 조정 */
+    background-color: #5e4a8f1b;
+    color: rgba(255, 255, 255, 0.191);
+    border: none;
+    cursor: pointer;
+    border-radius: 40px 0 0 40px; /* 왼쪽을 둥글게 만들어 반달 모양 */
+    font-size: 18px;
+    z-index: 3; /* 버튼이 투두리스트 위로 오도록 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 버튼 호버 스타일 */
+.toggle-todo-list:hover {
+    background-color: #5e4a8f85;
+    color: rgba(255, 255, 255, 0.467);
+}
+
+
+/* 버튼 클릭 시, 투두리스트가 오른쪽으로 나올 때 버튼이 왼쪽으로 살짝 이동 */
+.todo-list.show + .toggle-todo-list {
+    left: 70px; /* 버튼이 투두리스트 옆으로 이동 */
+}
+
+
+.todo-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* 투두 항목 스타일 */
+.todo-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2); /* 항목 배경 */
+    position: relative;
+}
+
+/* 체크박스 스타일 */
+.todo-item input[type="checkbox"] {
+    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* 텍스트 스타일 */
+.todo-item div {
+    font-size: 18px;
+    color: white;
+    flex: 1;
+}
+
+/* 체크박스 체크 시 스타일 변경 */
+.todo-item input[type="checkbox"]:checked + div {
+    color: rgba(255, 255, 255, 0.204); /* 체크 시 텍스트 흐리게 */
+}
+
+/* 엑스 버튼 스타일 */
+.todo-item .delete-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* 엑스 버튼 마우스 hover 시 */
+.todo-item .delete-btn:hover {
+    color: white;
+}
+
+/* To-Do 항목의 입력란 스타일 */
+.todo-input {
+    width: 75%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: transparent; /* 배경 투명 */
+    color: white; /* 텍스트 색상 */
+    font-size: 16px; /* 폰트 크기 */
+    margin-right: 10px;
+}
+
+/* To-Do 항목의 입력란에 포커스를 주었을 때 스타일 */
+.todo-input:focus {
+    background-color: rgba(0, 0, 0, 0.1); /* 약간 어두운 배경 */
+}
+
+/* 날짜 표시 스타일 */
+.date-display {
+    font-size: 24px; /* 글씨 크기 크게 */
+    font-weight: 100; /* 얇은 글씨 */
+    color: white; /* 흰색 글씨 */
+    text-align: center;
+    margin: 0 20px; /* 버튼들 간의 간격을 여백으로 조정 */
+    background-color: transparent; /* 배경 없애기 */
+    flex: 1; /* 날짜를 버튼들 사이에 배치 */
+    padding: 5px 0; /* 위아래 여백 추가 */
+    letter-spacing: 1px; /* 글자 간격을 조금 넓혀주기 */
+    margin-top: -30px; /* 날짜를 위로 올리기 */
+}

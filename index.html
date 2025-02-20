@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night Sky To-Do</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 밤하늘 배경 -->
+    <div class="sky"></div>
+    
+    <!-- 땅 배경 (초록색) -->
+    <div class="ground"></div>
+
+    <!-- To-Do 리스트 -->
+    <div class="todo-list" id="todoList">
+        <button class="toggle-todo-list" id="toggleTodoList">☰</button>
+        <div class="todo-header">
+            <button class="button-common add-todo">할 일 추가</button>
+            <span class="date-display"></span> <!-- 날짜 표시 영역 -->
+            <button class="button-common end-day">오늘 하루 끝내기</button>
+        </div>
+        <div id="todoItems"></div>
+    </div>    
+
+    <script src="script.js"></script>
+</body>
+</html>
