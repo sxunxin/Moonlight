@@ -2,10 +2,24 @@ const todoList = document.getElementById('todoList');
 const todoItemsContainer = document.getElementById('todoItems');
 const toggleTodoListBtn = document.getElementById('toggleTodoList');
 
-// 버튼 클릭 시 To-Do 리스트가 나오거나 숨겨짐
-toggleTodoListBtn.addEventListener('click', () => {
-    todoList.classList.toggle('show'); // To-Do 리스트의 'show' 클래스를 토글
+document.addEventListener("DOMContentLoaded", function () {
+    const todoList = document.getElementById("todoList");
+    const toggleButton = document.getElementById("toggleTodoList");
+
+    toggleButton.addEventListener("click", function () {
+        todoList.classList.toggle("show");
+
+        // 정확한 너비 계산
+        const todoWidth = todoList.getBoundingClientRect().width;
+
+        if (todoList.classList.contains("show")) {
+            toggleButton.style.right = `${todoWidth}px`;  // 리스트가 열린 후 버튼 이동
+        } else {
+            toggleButton.style.right = "0px";   // 닫힐 때 원래 위치로
+        }
+    });
 });
+
 
 // 할 일 추가 버튼 클릭 시 실행
 document.querySelector('.add-todo').addEventListener('click', () => {
@@ -93,8 +107,11 @@ window.addEventListener('load', () => {
 
 // 오늘 할 일 완료 버튼 클릭 시 날짜 하루 증가
 document.querySelector('.end-day').addEventListener('click', () => {
-    // 투두 항목들 삭제
-    document.getElementById('todoItems').innerHTML = '';
+    const todoItemsContainer = document.getElementById('todoItems');
+    const completedTasks = todoItemsContainer.querySelectorAll('.todo-item input:checked'); // 완료된 항목 수
+
+    // 투두 항목 초기화
+    todoItemsContainer.innerHTML = '';
 
     // 기존 날짜를 가져와서 하루 증가
     const currentDate = new Date(document.querySelector('.date-display').textContent);
@@ -106,12 +123,18 @@ document.querySelector('.end-day').addEventListener('click', () => {
     // 날짜 표시 영역에 새로운 날짜 넣기
     document.querySelector('.date-display').textContent = newDate;
 
-
-    // 1초 후에 투두리스트 숨기기 (슬라이딩으로 들어가게)
+    // 0.2초 후에 투두리스트 숨기기 (슬라이딩으로 들어가게)
     setTimeout(() => {
         document.getElementById('todoList').classList.remove('show'); // 투두리스트 숨기기
+        
+        // ✅ 토글 버튼 위치 초기화 (오른쪽 끝으로 복귀)
+        toggleTodoListBtn.style.right = "0px"; 
     }, 200); // 0.2초 후에 실행
+
+    // 완료된 할 일 수 만큼 별 추가
+    addStars(completedTasks.length);
 });
+
 
 // 날짜를 YYYY-MM-DD 형식으로 반환하는 함수
 function getFormattedDate(date) {
@@ -121,4 +144,3 @@ function getFormattedDate(date) {
 
     return `${year}-${month}-${day}`;
 }
-
