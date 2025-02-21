@@ -1,42 +1,23 @@
 let constellationIndex = 0; // 현재 양자리에서 몇 번째 별인지 추적
 let nowStar = 0;
 
-const constellationPositions = [
-    // 양자리 (Aries) - 오른쪽 상단
-    { x: 0.8, y: 0.1 }, { x: 0.85, y: 0.1 }, { x: 0.9, y: 0.1 }, { x: 0.8, y: 0.15 },
-    
-    // 황소자리 (Taurus) - 오른쪽 중간
-    { x: 0.8, y: 0.3 }, { x: 0.85, y: 0.3 }, { x: 0.9, y: 0.3 }, { x: 0.8, y: 0.35 },
-    
-    // 쌍둥이자리 (Gemini) - 오른쪽 하단
-    { x: 0.8, y: 0.5 }, { x: 0.85, y: 0.5 }, { x: 0.9, y: 0.5 }, { x: 0.8, y: 0.55 },
-    
-    // 게자리 (Cancer) - 왼쪽 상단
-    { x: 0.1, y: 0.1 }, { x: 0.15, y: 0.1 }, { x: 0.2, y: 0.1 }, { x: 0.1, y: 0.15 },
-    
-    // 사자자리 (Leo) - 왼쪽 중간
-    { x: 0.1, y: 0.3 }, { x: 0.15, y: 0.3 }, { x: 0.2, y: 0.3 }, { x: 0.1, y: 0.35 },
-    
-    // 처녀자리 (Virgo) - 왼쪽 하단
-    { x: 0.1, y: 0.5 }, { x: 0.15, y: 0.5 }, { x: 0.2, y: 0.5 }, { x: 0.1, y: 0.55 },
+// 별자리 보정값
+let AquariusX = -0.04;  // 물병자리의 X축 이동 값
+let AquariusY = -0.1;  // 물병자리의 Y축 이동 값
 
-    // 천칭자리 (Libra) - 중앙 상단
-    { x: 0.5, y: 0.1 }, { x: 0.55, y: 0.1 }, { x: 0.6, y: 0.1 }, { x: 0.5, y: 0.15 },
-    
-    // 전갈자리 (Scorpio) - 중앙 중간
-    { x: 0.5, y: 0.3 }, { x: 0.55, y: 0.3 }, { x: 0.6, y: 0.3 }, { x: 0.5, y: 0.35 },
-    
-    // 사수자리 (Sagittarius) - 중앙 하단
-    { x: 0.5, y: 0.5 }, { x: 0.55, y: 0.5 }, { x: 0.6, y: 0.5 }, { x: 0.5, y: 0.55 },
-    
-    // 염소자리 (Capricorn) - 왼쪽 하단 (아래쪽)
-    { x: 0.1, y: 0.7 }, { x: 0.15, y: 0.7 }, { x: 0.2, y: 0.7 }, { x: 0.1, y: 0.75 },
-
-    // 물병자리 (Aquarius) - 중앙 상단
-    { x: 0.5, y: 0.7 }, { x: 0.55, y: 0.7 }, { x: 0.6, y: 0.7 }, { x: 0.5, y: 0.75 },
-    
-    // 물고기자리 (Pisces) - 오른쪽 하단 (아래쪽)
-    { x: 0.8, y: 0.7 }, { x: 0.85, y: 0.7 }, { x: 0.9, y: 0.7 }, { x: 0.8, y: 0.75 }
+const constellations = [
+    // 물병자리
+    { x: 0.17 + AquariusX, y: 0.19 + AquariusY }, 
+    { x: 0.12 + AquariusX, y: 0.26 + AquariusY }, 
+    { x: 0.17 + AquariusX, y: 0.27 + AquariusY }, 
+    { x: 0.14 + AquariusX, y: 0.30 + AquariusY }, 
+    { x: 0.11 + AquariusX, y: 0.32 + AquariusY },
+    { x: 0.09 + AquariusX, y: 0.31 + AquariusY },
+    { x: 0.085 + AquariusX, y: 0.35 + AquariusY },
+    { x: 0.11 + AquariusX, y: 0.45 + AquariusY },
+    { x: 0.19 + AquariusX, y: 0.45 + AquariusY },
+    { x: 0.13 + AquariusX, y: 0.41 + AquariusY },
+    { x: 0.16 + AquariusX, y: 0.412 + AquariusY },
 ];
 
 function addStars(starCount) {
@@ -44,8 +25,8 @@ function addStars(starCount) {
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
-    if (starCount >= 10) {
-        // ⭐ 큰 별 1개 추가 (10개를 채웠을 때)
+    if (starCount >= 5) {
+        // ⭐ 큰 별 1개 추가 (5개를 채웠을 때)
         const bigStar = document.createElement('div');
         bigStar.classList.add('big-star');
         bigStar.style.position = 'absolute';
@@ -55,8 +36,8 @@ function addStars(starCount) {
         bigStar.style.top = `${skyHeight / 2 - 10}px`;
 
         // 큰 별 스타일
-        bigStar.style.width = '9px'; // 더 큼
-        bigStar.style.height = '9px';
+        bigStar.style.width = '8px'; // 더 큼
+        bigStar.style.height = '8px';
         bigStar.style.backgroundColor = 'white';
         bigStar.style.borderRadius = '50%';
 
@@ -71,7 +52,7 @@ function addStars(starCount) {
 
         // 0.5초 후 랜덤 위치로 이동
         setTimeout(() => {
-            const position = constellationPositions[constellationIndex];
+            const position = constellations[constellationIndex++];
 
             // 별을 해당 좌표로 이동
             const newX = position.x * skyWidth;
@@ -84,13 +65,11 @@ function addStars(starCount) {
             const randomDuration = Math.random() * 7 + 3;
             bigStar.style.animationDuration = `${randomDuration}s`;
 
-            // 다음 별로 인덱스를 증가시킴
-            constellationIndex = (constellationIndex + 1) % constellationPositions.length;
-
         }, 500);
 
-        // 작은 별 개수는 (starCount - 10)
-        starCount -= 10;
+        // 작은 별 개수는 (starCount - 1)
+        starCount -= 1;
+        
     }
 
     // ✨ 작은 별 추가 (남은 개수만큼)
@@ -143,7 +122,7 @@ window.addEventListener('resize', () => {
     // 큰 별들의 위치 업데이트
     const bigStars = document.querySelectorAll('.big-star');
     bigStars.forEach((bigStar, index) => {
-        const position = constellationPositions[index % constellationPositions.length];
+        const position = constellations[index % constellations.length];
         const newX = position.x * skyWidth;
         const newY = position.y * skyHeight;
 

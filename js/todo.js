@@ -100,6 +100,13 @@ document.querySelector('.add-todo').addEventListener('click', () => {
 
 // 페이지가 로드될 때 오늘 날짜를 표시
 window.addEventListener('load', () => {
+
+    //  =============== 테스트용 코드 ===============
+    // for (var i = 0; i < 20; i++) {
+    //     addStars(5);
+    // }
+    // ==============================================
+
     const currentDate = new Date();
     const formattedDate = getFormattedDate(currentDate);
     document.querySelector('.date-display').textContent = formattedDate;
