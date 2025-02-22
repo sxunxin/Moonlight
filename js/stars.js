@@ -6,19 +6,20 @@ let resizeTimeout; // 창 크기 변경 딜레이
 let AquariusX = -0.04;  
 let AquariusY = -0.1;  
 
+let PiscesX = 0.04;
+let PiscesY = -0.22;
+
 const constellations = [
-    // 물병자리 Aquarius
-    { x: 0.17 + AquariusX, y: 0.19 + AquariusY }, 
-    { x: 0.12 + AquariusX, y: 0.26 + AquariusY }, 
-    { x: 0.14 + AquariusX, y: 0.30 + AquariusY }, 
-    { x: 0.17 + AquariusX, y: 0.27 + AquariusY }, 
-    { x: 0.11 + AquariusX, y: 0.32 + AquariusY },
-    { x: 0.09 + AquariusX, y: 0.31 + AquariusY },
-    { x: 0.085 + AquariusX, y: 0.35 + AquariusY },
-    { x: 0.11 + AquariusX, y: 0.45 + AquariusY },
-    { x: 0.13 + AquariusX, y: 0.41 + AquariusY },
-    { x: 0.16 + AquariusX, y: 0.412 + AquariusY },
+    // 물병자리 Aquarius (11개, 1 - 11)
+    { x: 0.17 + AquariusX, y: 0.19 + AquariusY }, { x: 0.12 + AquariusX, y: 0.26 + AquariusY }, { x: 0.14 + AquariusX, y: 0.30 + AquariusY }, { x: 0.17 + AquariusX, y: 0.27 + AquariusY }, { x: 0.11 + AquariusX, y: 0.32 + AquariusY },
+    { x: 0.09 + AquariusX, y: 0.31 + AquariusY }, { x: 0.085 + AquariusX, y: 0.35 + AquariusY }, { x: 0.11 + AquariusX, y: 0.45 + AquariusY }, { x: 0.13 + AquariusX, y: 0.41 + AquariusY }, { x: 0.16 + AquariusX, y: 0.412 + AquariusY }, 
     { x: 0.19 + AquariusX, y: 0.45 + AquariusY },
+
+    // 물고기자리 Pisces (12개, 12 - 23)
+    { x: 0.50 + PiscesX, y: 0.28 + PiscesY }, { x: 0.485 + PiscesX, y: 0.29 + PiscesY }, { x: 0.49 + PiscesX, y: 0.32 + PiscesY }, { x: 0.48 + PiscesX, y: 0.43 + PiscesY }, { x: 0.455 + PiscesX, y: 0.485 + PiscesY },
+    { x: 0.52 + PiscesX, y: 0.47 + PiscesY }, { x: 0.55 + PiscesX, y: 0.48 + PiscesY }, { x: 0.60 + PiscesX, y: 0.47 + PiscesY }, { x: 0.616 + PiscesX, y: 0.45 + PiscesY }, { x: 0.632 + PiscesX, y: 0.47 + PiscesY },
+    { x: 0.622 + PiscesX, y: 0.50 + PiscesY }, { x: 0.60 + PiscesX, y: 0.50 + PiscesY },
+
 ];
 
 // 별자리 연결 코드 
@@ -28,6 +29,15 @@ function getConnectionsForNewStar(newStarIndex) {
 
     if (newStarIndex === 5) {
         connections.push([2, 5]);
+    } else if (newStarIndex === 12) {
+        connections.push([12, 12]);
+    } else if (newStarIndex === 14) {
+        connections.push([13, 14]);
+        connections.push([12, 14]);
+    } 
+    else if (newStarIndex === 23) {
+        connections.push([22, 23]);
+        connections.push([23, 19]);
     } else {
         connections.push([newStarIndex - 1, newStarIndex]);
     }
