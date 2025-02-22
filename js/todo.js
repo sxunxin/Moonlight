@@ -100,13 +100,6 @@ document.querySelector('.add-todo').addEventListener('click', () => {
 
 // 페이지가 로드될 때 오늘 날짜를 표시
 window.addEventListener('load', () => {
-
-    //  =============== 테스트용 코드 ===============
-    for (var i = 0; i < 1; i++) {
-        addStars(5);
-    }
-    // ==============================================
-
     const currentDate = new Date();
     const formattedDate = getFormattedDate(currentDate);
     document.querySelector('.date-display').textContent = formattedDate;
@@ -139,7 +132,7 @@ document.querySelector('.end-day').addEventListener('click', () => {
     }, 200); // 0.2초 후에 실행
 
     // 완료된 할 일 수 만큼 별 추가
-    addStars(completedTasks.length * 5);
+    addStars(completedTasks.length);
 });
 
 
@@ -151,3 +144,13 @@ function getFormattedDate(date) {
 
     return `${year}-${month}-${day}`;
 }
+
+//  ============================== 테스트용 코드 ==============================
+// ============================================================================
+document.addEventListener('keydown', function(event) {
+    if (event.key === '0') {
+        addStars(5);  
+    }
+});
+// ============================================================================
+// ============================================================================
