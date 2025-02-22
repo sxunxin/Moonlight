@@ -102,9 +102,9 @@ document.querySelector('.add-todo').addEventListener('click', () => {
 window.addEventListener('load', () => {
 
     //  =============== 테스트용 코드 ===============
-    // for (var i = 0; i < 20; i++) {
-    //     addStars(5);
-    // }
+    for (var i = 0; i < 1; i++) {
+        addStars(5);
+    }
     // ==============================================
 
     const currentDate = new Date();
@@ -139,7 +139,7 @@ document.querySelector('.end-day').addEventListener('click', () => {
     }, 200); // 0.2초 후에 실행
 
     // 완료된 할 일 수 만큼 별 추가
-    addStars(completedTasks.length);
+    addStars(completedTasks.length * 5);
 });
 
 
