@@ -3,11 +3,9 @@ let nowStar = 0;
 let resizeTimeout; // 창 크기 변경 딜레이
 
 // 별자리 보정값
-let AquariusX = -0.04;  
-let AquariusY = -0.1;  
-
-let PiscesX = 0.04;
-let PiscesY = -0.22;
+let AquariusX = -0.04, AquariusY = -0.1;  
+let PiscesX = 0.04, PiscesY = -0.22;
+let AriesX = -0.2, AriesY = 0.34;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -20,6 +18,8 @@ const constellations = [
     { x: 0.52 + PiscesX, y: 0.47 + PiscesY }, { x: 0.55 + PiscesX, y: 0.48 + PiscesY }, { x: 0.60 + PiscesX, y: 0.47 + PiscesY }, { x: 0.616 + PiscesX, y: 0.45 + PiscesY }, { x: 0.632 + PiscesX, y: 0.47 + PiscesY },
     { x: 0.622 + PiscesX, y: 0.50 + PiscesY }, { x: 0.60 + PiscesX, y: 0.50 + PiscesY },
 
+    // 양자리 Aries (4개, 24 - 27)
+    { x: 0.4 + AriesX, y: 0.53 + AriesY }, { x: 0.47 + AriesX, y: 0.50 + AriesY }, { x: 0.51 + AriesX, y: 0.52 + AriesY }, { x: 0.515 + AriesX, y: 0.56 + AriesY },
 ];
 
 // 별자리 연결 코드 
@@ -27,18 +27,26 @@ function getConnectionsForNewStar(newStarIndex) {
     const connections = [];
     newStarIndex++;
 
-    if (newStarIndex === 5) {
+    // 물병자리
+    if (newStarIndex === 5) { 
         connections.push([2, 5]);
-    } else if (newStarIndex === 12) {
+    } 
+    // 물고기자리
+    else if (newStarIndex === 12) { 
         connections.push([12, 12]);
     } else if (newStarIndex === 14) {
         connections.push([13, 14]);
         connections.push([12, 14]);
-    } 
-    else if (newStarIndex === 23) {
+    } else if (newStarIndex === 23) {
         connections.push([22, 23]);
         connections.push([23, 19]);
-    } else {
+    } 
+    // 양자리
+    else if (newStarIndex === 24) {
+        connections.push([24, 24]);
+    }
+    // 기본 연결 
+    else {
         connections.push([newStarIndex - 1, newStarIndex]);
     }
     return connections;
