@@ -3,10 +3,11 @@ let nowStar = 0;
 let resizeTimeout; // 창 크기 변경 딜레이
 
 // 별자리 보정값
-let AquariusX = -0.04, AquariusY = -0.1;  
+let AquariusX = -0.03, AquariusY = -0.1;  
 let PiscesX = 0.04, PiscesY = -0.22;
 let AriesX = -0.2, AriesY = 0.34;
 let TaurusX = 0.4, TaurusY = 0;
+let GeminiX = -0.45, GeminiY =0.07;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -27,7 +28,11 @@ const constellations = [
     { x: 0.54 + TaurusX, y: 0.60 + TaurusY }, { x: 0.5 + TaurusX, y: 0.73 + TaurusY }, { x: 0.502 + TaurusX, y: 0.758 + TaurusY }, { x: 0.49 + TaurusX, y: 0.77 + TaurusY }, { x: 0.47 + TaurusX, y: 0.80 + TaurusY },
     { x: 0.43 + TaurusX, y: 0.87 + TaurusY },
 
-    { x: 0.43 + TaurusX, y: 0.87 + TaurusY },
+    // 쌍둥이자리 Gemini (16개, 39 - 54)
+    { x: 0.5 + GeminiX, y: 0.5 + GeminiY }, { x: 0.505 + GeminiX, y: 0.53 + GeminiY }, { x: 0.507 + GeminiX, y: 0.61 + GeminiY }, { x: 0.52 + GeminiX, y: 0.65 + GeminiY }, { x: 0.54 + GeminiX, y: 0.74 + GeminiY },
+    { x: 0.495 + GeminiX, y: 0.666 + GeminiY }, { x: 0.505 + GeminiX, y: 0.74 + GeminiY }, { x: 0.49 + GeminiX, y: 0.545 + GeminiY }, { x: 0.524 + GeminiX, y: 0.546 + GeminiY }, { x: 0.548 + GeminiX, y: 0.548 + GeminiY },
+    { x: 0.576 + GeminiX, y: 0.541 + GeminiY }, { x: 0.535 + GeminiX, y: 0.494 + GeminiY }, { x: 0.56 + GeminiX, y: 0.643 + GeminiY }, { x: 0.58 + GeminiX, y: 0.692 + GeminiY }, { x: 0.596 + GeminiX, y: 0.699 + GeminiY },
+    { x: 0.56 + GeminiX, y: 0.725 + GeminiY },
 ];
 
 // 별자리 연결 코드 
@@ -58,6 +63,22 @@ function getConnectionsForNewStar(newStarIndex) {
         connections.push([28, 28]);
     } else if (newStarIndex === 34) {
         connections.push([31, 34]);
+    }
+    // 쌍둥이자리
+    else if (newStarIndex === 39) {
+        connections.push([39, 39]);
+    } else if (newStarIndex === 44) {
+        connections.push([41, 44]);
+    } else if (newStarIndex === 46) {
+        connections.push([40, 46]);
+    } else if (newStarIndex === 47) {
+        connections.push([40, 47]);
+    } else if (newStarIndex === 50) {
+        connections.push([48, 50]);
+    } else if (newStarIndex === 51) {
+        connections.push([48, 51]);
+    } else if (newStarIndex === 54) {
+        connections.push([51, 54]);
     }
     // 기본 연결 
     else {
