@@ -149,7 +149,7 @@ function getFormattedDate(date) {
 // ============================================================================
 document.addEventListener('keydown', function(event) {
     if (event.key === '0') {
-        addStars(5);  
+        addStars(10);  
     }
 });
 // ============================================================================

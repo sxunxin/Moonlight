@@ -3,11 +3,11 @@ let nowStar = 0;
 let resizeTimeout; // 창 크기 변경 딜레이
 
 // 별자리 보정값
-let AquariusX = -0.04;  // 물병자리의 X축 이동 값
-let AquariusY = -0.1;  // 물병자리의 Y축 이동 값
+let AquariusX = -0.04;  
+let AquariusY = -0.1;  
 
 const constellations = [
-    // 물병자리
+    // 물병자리 Aquarius
     { x: 0.17 + AquariusX, y: 0.19 + AquariusY }, 
     { x: 0.12 + AquariusX, y: 0.26 + AquariusY }, 
     { x: 0.14 + AquariusX, y: 0.30 + AquariusY }, 
@@ -21,7 +21,7 @@ const constellations = [
     { x: 0.19 + AquariusX, y: 0.45 + AquariusY },
 ];
 
-// 새로운 별과 연결할 별들 반환 (예: 4번 별이 생기면 1번, 3번과 연결)
+// 별자리 연결 코드 
 function getConnectionsForNewStar(newStarIndex) {
     const connections = [];
     newStarIndex++;
@@ -216,44 +216,58 @@ function drawOneLineBetweenStars() {
         }
     });
 }
-// 창 크기 변경시 별들 다시 연결
+
+// 창 크기 변경 시 별들 다시 연결
 function drawLinesBetweenStars() {
     const sky = document.querySelector('.sky');
     const stars = document.querySelectorAll('.big-star');
+    const connections = [];  // 새로 연결할 별들 저장
 
-    for (let i = 0; i < stars.length - 1; i++) {
-        const startStar = stars[i];
-        const endStar = stars[i + 1];
-
-        const line = document.createElement('div');
-        line.classList.add('constellation-line');
-        line.style.position = 'absolute';
-        line.style.backgroundColor = 'rgba(255, 255, 255, 0.28)';
-        line.style.height = '2px';
-        line.style.transformOrigin = 'left center';
-
-        const x1 = parseFloat(startStar.style.left) + 4;
-        const y1 = parseFloat(startStar.style.top) + 4;
-        const x2 = parseFloat(endStar.style.left) + 4;
-        const y2 = parseFloat(endStar.style.top) + 4;
-
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-        // 선의 초기 너비를 0으로 설정
-        line.style.width = `0px`;
-        line.style.left = `${x1}px`;
-        line.style.top = `${y1}px`;
-        line.style.transform = `rotate(${angle}deg)`;
-
-        sky.appendChild(line);
-
-        // 애니메이션 시작
-        setTimeout(() => {
-            line.style.transition = 'width 1s ease-out'; // 너비 애니메이션 적용
-            line.style.width = `${distance}px`; // 실제 거리만큼 너비 확장
-        }, 100); // 0.1초 후 애니메이션 시작
+    // 모든 별들에 대해 연결을 처리
+    for (let i = 0; i < stars.length; i++) {
+        const newConnections = getConnectionsForNewStar(i); // 연결할 별들을 가져옴
+        connections.push(...newConnections);  // 연결 추가
     }
+
+    // 연결된 별들끼리 선을 그림
+    connections.forEach(connection => {
+        const startStarIndex = connection[0]; // 연결할 첫 번째 별 인덱스
+        const endStarIndex = connection[1];   // 연결할 두 번째 별 인덱스
+
+        const startStar = stars[startStarIndex - 1]; // 0부터 시작하는 인덱스를 사용
+        const endStar = stars[endStarIndex - 1];     // 동일
+
+        // 유효한 별이 있을 경우 선을 그리도록
+        if (startStar && endStar) {
+            const line = document.createElement('div');
+            line.classList.add('constellation-line');
+            line.style.position = 'absolute';
+            line.style.backgroundColor = 'rgba(255, 255, 255, 0.28)';
+            line.style.height = '2px';
+            line.style.transformOrigin = 'left center';
+
+            const x1 = parseFloat(startStar.style.left) + 4;
+            const y1 = parseFloat(startStar.style.top) + 4;
+            const x2 = parseFloat(endStar.style.left) + 4;
+            const y2 = parseFloat(endStar.style.top) + 4;
+
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+            line.style.width = `0px`; // 처음엔 0px
+            line.style.left = `${x1}px`;
+            line.style.top = `${y1}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.transition = 'width 1s ease-out'; // 선이 천천히 그려짐
+
+            sky.appendChild(line);
+
+            // 0.1초 후 선이 부드럽게 나타나도록 길이 조절
+            setTimeout(() => {
+                line.style.width = `${distance}px`;
+            }, 100);
+        }
+    });
 }
