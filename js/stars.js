@@ -10,6 +10,7 @@ let TaurusX = 0.4, TaurusY = 0;
 let GeminiX = -0.45, GeminiY = 0.07;
 let CancerX = 0.24, CancerY = -0.1;
 let LeoX = -0.14, LeoY = -0.37;
+let VirgoX = 0.03, VirgoY = 0.24;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -44,6 +45,10 @@ const constellations = [
     { x: 0.5 + LeoX, y: 0.5 + LeoY }, { x: 0.444 + LeoX, y: 0.51 + LeoY }, { x: 0.4 + LeoX, y: 0.58 + LeoY }, { x: 0.444 + LeoX, y: 0.565 + LeoY }, { x: 0.52 + LeoX, y: 0.57 + LeoY },
     { x: 0.518 + LeoX, y: 0.532 + LeoY }, { x: 0.5 + LeoX, y: 0.46 + LeoY }, { x: 0.522 + LeoX, y: 0.43 + LeoY }, { x: 0.53 + LeoX, y: 0.45 + LeoY },
 
+    // 처녀자리 Virgo (13개, 71 - 83)
+    { x: 0.406 + VirgoX, y: 0.613 + VirgoY }, { x: 0.422 + VirgoX, y: 0.605 + VirgoY }, { x: 0.428 + VirgoX, y: 0.623 + VirgoY }, { x: 0.45 + VirgoX, y: 0.617 + VirgoY }, { x: 0.463 + VirgoX, y: 0.59 + VirgoY },
+    { x: 0.49 + VirgoX, y: 0.576 + VirgoY }, { x: 0.51 + VirgoX, y: 0.582 + VirgoY }, { x: 0.536 + VirgoX, y: 0.57 + VirgoY }, { x: 0.482 + VirgoX, y: 0.54 + VirgoY }, { x: 0.485 + VirgoX, y: 0.48 + VirgoY },
+    { x: 0.447 + VirgoX, y: 0.56 + VirgoY }, { x: 0.43 + VirgoX, y: 0.547 + VirgoY }, { x: 0.398 + VirgoX, y: 0.558 + VirgoY },
 
 ];
 
@@ -117,6 +122,15 @@ function getConnectionsForNewStar(newStarIndex) {
     } else if (newStarIndex === 68) {
         connections.push([62, 68]);
     } 
+    // 처녀자리
+    else if (newStarIndex === 71) {
+        connections.push([71, 71]);
+    } else if (newStarIndex === 79) {
+        connections.push([76, 79]);
+    } else if (newStarIndex === 81) {
+        connections.push([79, 81]);
+        connections.push([74, 81]);
+    }
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
