@@ -168,7 +168,7 @@ document.addEventListener('keydown', function(event) {
 
 window.addEventListener('load', () => {
     for (var i = 0; i < constellations.length; i++) {
-        //addStars(5); 
+        addStars(5); 
     } 
     setTimeout(drawLinesBetweenStars, 1000);
 });
