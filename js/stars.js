@@ -253,7 +253,7 @@ function addStars(starCount) {
         // 작은 별 개수는 (starCount - 1)
         starCount -= 1;
 
-        if (constellationIndex === 136) {
+        if (constellationIndex >= 136) {
             setTimeout(createMoon, 3000);
         }
     }
