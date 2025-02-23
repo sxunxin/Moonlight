@@ -5,12 +5,13 @@ let resizeTimeout; // 창 크기 변경 딜레이
 // 별자리 보정값
 let AquariusX = -0.03, AquariusY = -0.1;  
 let PiscesX = 0.04, PiscesY = -0.22;
-let AriesX = -0.2, AriesY = 0.34;
+let AriesX = -0.24, AriesY = 0.35;
 let TaurusX = 0.4, TaurusY = 0;
 let GeminiX = -0.45, GeminiY = 0.07;
 let CancerX = 0.24, CancerY = -0.1;
 let LeoX = -0.14, LeoY = -0.37;
 let VirgoX = 0.03, VirgoY = 0.24;
+let LibraX = -0.02, LibraY = 0.1;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -50,6 +51,9 @@ const constellations = [
     { x: 0.49 + VirgoX, y: 0.576 + VirgoY }, { x: 0.51 + VirgoX, y: 0.582 + VirgoY }, { x: 0.536 + VirgoX, y: 0.57 + VirgoY }, { x: 0.482 + VirgoX, y: 0.54 + VirgoY }, { x: 0.485 + VirgoX, y: 0.48 + VirgoY },
     { x: 0.447 + VirgoX, y: 0.56 + VirgoY }, { x: 0.43 + VirgoX, y: 0.547 + VirgoY }, { x: 0.398 + VirgoX, y: 0.558 + VirgoY },
 
+    // 천칭자리 Libra (8개, 84 - 91)
+    { x: 0.308 + LibraX, y: 0.51 + LibraY }, { x: 0.314 + LibraX, y: 0.535 + LibraY }, { x: 0.34 + LibraX, y: 0.52 + LibraY }, { x: 0.37 + LibraX, y: 0.47 + LibraY }, { x: 0.40 + LibraX, y: 0.52 + LibraY },
+    { x: 0.383 + LibraX, y: 0.61 + LibraY }, { x: 0.335 + LibraX, y: 0.65 + LibraY }, { x: 0.333 + LibraX, y: 0.67 + LibraY },
 ];
 
 // 별자리 연결 코드 
@@ -131,6 +135,13 @@ function getConnectionsForNewStar(newStarIndex) {
         connections.push([79, 81]);
         connections.push([74, 81]);
     }
+    // 천칭자리
+    else if (newStarIndex === 84) {
+        connections.push([84, 84]);
+    } else if (newStarIndex === 89) {
+        connections.push([88, 89]);
+        connections.push([87, 89]);
+    } 
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
@@ -190,7 +201,7 @@ function addStars(starCount) {
 
     // ✨ 작은 별 추가 (남은 개수만큼)
     for (let i = 0; i < starCount; i++) {
-        if (nowStar > 800) break;
+        if (nowStar > 1000) break;
         nowStar++;
         const star = document.createElement('div');
         star.classList.add('star');
@@ -201,7 +212,7 @@ function addStars(starCount) {
         star.style.top = `${skyHeight / 2 - 10}px`;
 
         // 작은 별 스타일 설정
-        const starSize = Math.random() * 3 + 2; // 2px ~ 5px 크기
+        const starSize = Math.random() * 3 + 1; // 2px ~ 5px 크기
         star.style.width = `${starSize}px`;
         star.style.height = `${starSize}px`;
         star.style.backgroundColor = 'white';
