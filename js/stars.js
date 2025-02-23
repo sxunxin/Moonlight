@@ -6,14 +6,14 @@ let resizeTimeout; // 창 크기 변경 딜레이
 let AquariusX = -0.03, AquariusY = -0.1;  
 let PiscesX = 0.035, PiscesY = -0.22;
 let AriesX = -0.24, AriesY = 0.35;
-let TaurusX = 0.38, TaurusY = -0.05;
+let TaurusX = 0.38, TaurusY = -0.08;
 let GeminiX = -0.45, GeminiY = 0.07;
-let CancerX = 0.21, CancerY = -0.07;
-let LeoX = -0.14, LeoY = -0.34;
+let CancerX = 0.16, CancerY = -0.01;
+let LeoX = -0.13, LeoY = -0.34;
 let VirgoX = 0.03, VirgoY = 0.29;
 let LibraX = -0.02, LibraY = 0.14;
 let ScorpioX = 0.02, ScorpioY = 0.03;
-let SagittariusX = 0.02, SagittariusY = -0.2;
+let SagittariusX = -0.02, SagittariusY = -0.2;
 let CapricornX = 0.15, CapricornY = 0.11;
 
 const constellations = [
@@ -293,6 +293,8 @@ function addStars(starCount) {
             star.style.animationDuration = `${randomDuration}s`;
 
         }, 500);
+
+        checkMoon();
     }
 }
 
@@ -441,4 +443,12 @@ function drawLinesBetweenStars() {
             }, 100);
         }
     });
+}
+
+function checkMoon() {
+    const bigStars = document.querySelectorAll('.big-star');
+    if (bigStars.length === 137) {
+        let moon = document.getElementById('moon');
+        moon.style.display = 'block'; // 달 표시
+    }
 }

@@ -9,7 +9,7 @@ body, html {
 
 /* 밤하늘 배경 */
 .sky {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -48,5 +48,18 @@ body, html {
     animation: twinkle 2s infinite alternate;
 }
 
-
-
+#moon {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.2), rgba(221, 221, 221, 0.2) 25%, rgba(187, 187, 187, 0.2) 50%, rgba(153, 153, 153, 0.4) 75%, rgba(119, 119, 119, 0.1)); /* 반투명 달 표면 */
+    border-radius: 50%;
+    box-shadow: 
+        0 0 50px rgba(255, 255, 255, 0.9),
+        inset -10px -10px 20px rgba(0, 0, 0, 0.2),
+        inset 15px 15px 30px rgba(255, 255, 255, 0.3);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
