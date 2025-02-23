@@ -9,6 +9,7 @@ let AriesX = -0.2, AriesY = 0.34;
 let TaurusX = 0.4, TaurusY = 0;
 let GeminiX = -0.45, GeminiY = 0.07;
 let CancerX = 0.24, CancerY = -0.1;
+let LeoX = -0.14, LeoY = -0.37;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -37,7 +38,13 @@ const constellations = [
 
     // 게자리 Cancer (7개, 55 - 61)
     { x: 0.503 + CancerX, y: 0.487 + CancerY }, { x: 0.493 + CancerX, y: 0.525 + CancerY }, { x: 0.51 + CancerX, y: 0.54 + CancerY }, { x: 0.513 + CancerX, y: 0.512 + CancerY }, { x: 0.513 + CancerX, y: 0.395 + CancerY },
-    { x: 0.47 + CancerX, y: 0.59 + CancerY }, { x: 0.515 + CancerX, y: 0.65 + CancerY },
+    { x: 0.463 + CancerX, y: 0.59 + CancerY }, { x: 0.515 + CancerX, y: 0.65 + CancerY },
+
+    // 사자자리 Leo (9개, 62 - 70)
+    { x: 0.5 + LeoX, y: 0.5 + LeoY }, { x: 0.444 + LeoX, y: 0.51 + LeoY }, { x: 0.4 + LeoX, y: 0.58 + LeoY }, { x: 0.444 + LeoX, y: 0.565 + LeoY }, { x: 0.52 + LeoX, y: 0.57 + LeoY },
+    { x: 0.518 + LeoX, y: 0.532 + LeoY }, { x: 0.5 + LeoX, y: 0.46 + LeoY }, { x: 0.522 + LeoX, y: 0.43 + LeoY }, { x: 0.53 + LeoX, y: 0.45 + LeoY },
+
+
 ];
 
 // 별자리 연결 코드 
@@ -98,6 +105,18 @@ function getConnectionsForNewStar(newStarIndex) {
     } else if (newStarIndex === 61) {
         connections.push([57, 61]);
     }
+    // 사자자리
+    else if (newStarIndex === 62) {
+        connections.push([62, 62]);
+    } else if (newStarIndex === 65) {
+        connections.push([64, 65]);
+        connections.push([63, 65]);
+    } else if (newStarIndex === 67) {
+        connections.push([66, 67]);
+        connections.push([67, 62]);
+    } else if (newStarIndex === 68) {
+        connections.push([62, 68]);
+    } 
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
