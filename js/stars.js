@@ -1,4 +1,4 @@
-let constellationIndex = 0; // 현재 양자리에서 몇 번째 별인지 추적
+let constellationIndex = 0; 
 let nowStar = 0;
 let resizeTimeout; // 창 크기 변경 딜레이
 
@@ -6,14 +6,15 @@ let resizeTimeout; // 창 크기 변경 딜레이
 let AquariusX = -0.03, AquariusY = -0.1;  
 let PiscesX = 0.035, PiscesY = -0.22;
 let AriesX = -0.24, AriesY = 0.35;
-let TaurusX = 0.4, TaurusY = 0;
+let TaurusX = 0.38, TaurusY = -0.05;
 let GeminiX = -0.45, GeminiY = 0.07;
 let CancerX = 0.21, CancerY = -0.07;
 let LeoX = -0.14, LeoY = -0.34;
 let VirgoX = 0.03, VirgoY = 0.29;
 let LibraX = -0.02, LibraY = 0.14;
 let ScorpioX = 0.02, ScorpioY = 0.03;
-let SagittariusX = 0.03, SagittariusY = -0.23;
+let SagittariusX = 0.02, SagittariusY = -0.2;
+let CapricornX = 0.15, CapricornY = 0.11;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -69,6 +70,9 @@ const constellations = [
     { x: 0.83 + SagittariusX, y: 0.422 + SagittariusY }, { x: 0.804 + SagittariusX, y: 0.426 + SagittariusY }, { x: 0.778 + SagittariusX, y: 0.465 + SagittariusY }, { x: 0.794 + SagittariusX, y: 0.6 + SagittariusY }, { x: 0.82 + SagittariusX, y: 0.575 + SagittariusY },
     { x: 0.82 + SagittariusX, y: 0.62 + SagittariusY },
 
+    // 염소자리 Capricorn (10개 128 - 137)
+    { x: 0.6 + CapricornX, y: 0.6 + CapricornY }, { x: 0.59 + CapricornX, y: 0.63 + CapricornY }, { x: 0.55 + CapricornX, y: 0.65 + CapricornY }, { x: 0.52 + CapricornX, y: 0.643 + CapricornY }, { x: 0.5 + CapricornX, y: 0.646 + CapricornY },
+    { x: 0.488 + CapricornX, y: 0.638 + CapricornY }, { x: 0.509 + CapricornX, y: 0.71 + CapricornY }, { x: 0.56 + CapricornX, y: 0.787 + CapricornY }, { x: 0.569 + CapricornX, y: 0.765 + CapricornY }, { x: 0.585 + CapricornX, y: 0.678 + CapricornY },
 ];
 
 // 별자리 연결 코드 
@@ -185,6 +189,15 @@ function getConnectionsForNewStar(newStarIndex) {
     } else if (newStarIndex === 127) {
         connections.push([125, 127]);
     } 
+    // 염소자리 
+    else if (newStarIndex === 128) {
+        connections.push([128, 128]);
+    } else if (newStarIndex === 137) {
+        connections.push([136, 137]);
+        connections.push([129, 137]);
+    } else if (newStarIndex > 137) {
+        connections.push([137, 137]);
+    }
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
@@ -197,7 +210,7 @@ function addStars(starCount) {
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
-    if (starCount >= 5) {
+    if (starCount >= 5 && constellationIndex < 137) {
         // ⭐ 큰 별 1개 추가 (5개를 채웠을 때)
         const bigStar = document.createElement('div');
         bigStar.classList.add('big-star');
@@ -244,7 +257,7 @@ function addStars(starCount) {
 
     // ✨ 작은 별 추가 (남은 개수만큼)
     for (let i = 0; i < starCount; i++) {
-        if (nowStar > 1000) break;
+        if (nowStar > 1600) break;
         nowStar++;
         const star = document.createElement('div');
         star.classList.add('star');

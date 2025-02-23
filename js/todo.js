@@ -148,29 +148,24 @@ function getFormattedDate(date) {
 //  ============================== 테스트용 코드 ==============================
 // ============================================================================
 document.addEventListener('keydown', function(event) { 
+    if (event.key === '8') {
+        addStars(100);  
+    }
+    if (event.key === '9') {
+        for (var i = 0; i < constellations.length - 1; i++) {
+            addStars(5); 
+        } 
+        setTimeout(drawLinesBetweenStars, 1000);
+    }9
     if (event.key === '0') {
         addStars(10);  
     }
 });
-document.addEventListener('keydown', function(event) { 
-    if (event.key === '8') {
-        addStars(100);  
-    }
-});
-document.addEventListener('keydown', function(event) {
-    if (event.key === '9') {
-        for (var i = 0; i < constellations.length; i++) {
-            addStars(5); 
-        } 
-        setTimeout(drawLinesBetweenStars, 1000);
-    }
-});
-
 window.addEventListener('load', () => {
     for (var i = 0; i < constellations.length; i++) {
-        addStars(5); 
+        //addStars(5); 
     } 
-    setTimeout(drawLinesBetweenStars, 1000);
+    //setTimeout(drawLinesBetweenStars, 1000);
 });
 // ============================================================================
 // ============================================================================
