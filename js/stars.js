@@ -4,15 +4,16 @@ let resizeTimeout; // 창 크기 변경 딜레이
 
 // 별자리 보정값
 let AquariusX = -0.03, AquariusY = -0.1;  
-let PiscesX = 0.04, PiscesY = -0.22;
+let PiscesX = 0.035, PiscesY = -0.22;
 let AriesX = -0.24, AriesY = 0.35;
 let TaurusX = 0.4, TaurusY = 0;
 let GeminiX = -0.45, GeminiY = 0.07;
-let CancerX = 0.24, CancerY = -0.1;
-let LeoX = -0.14, LeoY = -0.37;
-let VirgoX = 0.03, VirgoY = 0.24;
+let CancerX = 0.21, CancerY = -0.07;
+let LeoX = -0.14, LeoY = -0.34;
+let VirgoX = 0.03, VirgoY = 0.29;
 let LibraX = -0.02, LibraY = 0.14;
 let ScorpioX = 0.02, ScorpioY = 0.03;
+let SagittariusX = 0.03, SagittariusY = -0.23;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -60,6 +61,14 @@ const constellations = [
     { x: 0.2 + ScorpioX, y: 0.385 + ScorpioY }, { x: 0.215 + ScorpioX, y: 0.41 + ScorpioY }, { x: 0.195 + ScorpioX, y: 0.42 + ScorpioY }, { x: 0.2 + ScorpioX, y: 0.46 + ScorpioY }, { x: 0.226 + ScorpioX, y: 0.48 + ScorpioY },
     { x: 0.243 + ScorpioX, y: 0.483 + ScorpioY }, { x: 0.253 + ScorpioX, y: 0.45 + ScorpioY }, { x: 0.258 + ScorpioX, y: 0.42 + ScorpioY }, { x: 0.287 + ScorpioX, y: 0.376 + ScorpioY }, { x: 0.313 + ScorpioX, y: 0.363 + ScorpioY },
     { x: 0.343 + ScorpioX, y: 0.36 + ScorpioY }, { x: 0.342 + ScorpioX, y: 0.32 + ScorpioY }, { x: 0.333 + ScorpioX, y: 0.3 + ScorpioY }, { x: 0.337 + ScorpioX, y: 0.4 + ScorpioY }, { x: 0.33 + ScorpioX, y: 0.432 + ScorpioY },
+
+    // 궁수자리 Sagittarius (21개, 107 - 127)
+    { x: 0.9 + SagittariusX, y: 0.51 + SagittariusY }, { x: 0.894 + SagittariusX, y: 0.477 + SagittariusY }, { x: 0.91 + SagittariusX, y: 0.43 + SagittariusY }, { x: 0.945 + SagittariusX, y: 0.41 + SagittariusY }, { x: 0.894 + SagittariusX, y: 0.432 + SagittariusY },
+    { x: 0.875 + SagittariusX, y: 0.39 + SagittariusY }, { x: 0.883 + SagittariusX, y: 0.337 + SagittariusY }, { x: 0.86 + SagittariusX, y: 0.423 + SagittariusY }, { x: 0.85 + SagittariusX, y: 0.46 + SagittariusY }, { x: 0.84 + SagittariusX, y: 0.442 + SagittariusY },
+    { x: 0.848 + SagittariusX, y: 0.422 + SagittariusY }, { x: 0.839 + SagittariusX, y: 0.375 + SagittariusY }, { x: 0.85 + SagittariusX, y: 0.356 + SagittariusY }, { x: 0.83 + SagittariusX, y: 0.37 + SagittariusY }, { x: 0.81 + SagittariusX, y: 0.33 + SagittariusY },
+    { x: 0.83 + SagittariusX, y: 0.422 + SagittariusY }, { x: 0.804 + SagittariusX, y: 0.426 + SagittariusY }, { x: 0.778 + SagittariusX, y: 0.465 + SagittariusY }, { x: 0.794 + SagittariusX, y: 0.6 + SagittariusY }, { x: 0.82 + SagittariusX, y: 0.575 + SagittariusY },
+    { x: 0.82 + SagittariusX, y: 0.62 + SagittariusY },
+
 ];
 
 // 별자리 연결 코드 
@@ -153,7 +162,29 @@ function getConnectionsForNewStar(newStarIndex) {
         connections.push([92, 92]);
     } else if (newStarIndex === 105) {
         connections.push([102, 105]);
-    }
+    } 
+    // 궁수자리 
+    else if (newStarIndex === 107) {
+        connections.push([107, 107]);
+    } else if (newStarIndex === 111) {
+        connections.push([109, 111]);
+        connections.push([111, 108]);
+    } else if (newStarIndex === 114) {
+        connections.push([112, 114]);
+        connections.push([114, 111]);
+    } else if (newStarIndex === 115) {
+        connections.push([114, 115]);
+        connections.push([115, 108]);
+    } else if (newStarIndex === 117) {
+        connections.push([116, 117]);
+        connections.push([117, 114]);
+    } else if (newStarIndex === 120) {
+        connections.push([118, 120]);
+    } else if (newStarIndex === 122) {
+        connections.push([116, 122]);
+    } else if (newStarIndex === 127) {
+        connections.push([125, 127]);
+    } 
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
