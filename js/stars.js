@@ -11,7 +11,8 @@ let GeminiX = -0.45, GeminiY = 0.07;
 let CancerX = 0.24, CancerY = -0.1;
 let LeoX = -0.14, LeoY = -0.37;
 let VirgoX = 0.03, VirgoY = 0.24;
-let LibraX = -0.02, LibraY = 0.1;
+let LibraX = -0.02, LibraY = 0.14;
+let ScorpioX = 0.02, ScorpioY = 0.03;
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -54,6 +55,11 @@ const constellations = [
     // 천칭자리 Libra (8개, 84 - 91)
     { x: 0.308 + LibraX, y: 0.51 + LibraY }, { x: 0.314 + LibraX, y: 0.535 + LibraY }, { x: 0.34 + LibraX, y: 0.52 + LibraY }, { x: 0.37 + LibraX, y: 0.47 + LibraY }, { x: 0.40 + LibraX, y: 0.52 + LibraY },
     { x: 0.383 + LibraX, y: 0.61 + LibraY }, { x: 0.335 + LibraX, y: 0.65 + LibraY }, { x: 0.333 + LibraX, y: 0.67 + LibraY },
+
+    // 전갈자리 Scorpio (15개, 92 - 106)
+    { x: 0.2 + ScorpioX, y: 0.385 + ScorpioY }, { x: 0.215 + ScorpioX, y: 0.41 + ScorpioY }, { x: 0.195 + ScorpioX, y: 0.42 + ScorpioY }, { x: 0.2 + ScorpioX, y: 0.46 + ScorpioY }, { x: 0.226 + ScorpioX, y: 0.48 + ScorpioY },
+    { x: 0.243 + ScorpioX, y: 0.483 + ScorpioY }, { x: 0.253 + ScorpioX, y: 0.45 + ScorpioY }, { x: 0.258 + ScorpioX, y: 0.42 + ScorpioY }, { x: 0.287 + ScorpioX, y: 0.376 + ScorpioY }, { x: 0.313 + ScorpioX, y: 0.363 + ScorpioY },
+    { x: 0.343 + ScorpioX, y: 0.36 + ScorpioY }, { x: 0.342 + ScorpioX, y: 0.32 + ScorpioY }, { x: 0.333 + ScorpioX, y: 0.3 + ScorpioY }, { x: 0.337 + ScorpioX, y: 0.4 + ScorpioY }, { x: 0.33 + ScorpioX, y: 0.432 + ScorpioY },
 ];
 
 // 별자리 연결 코드 
@@ -142,6 +148,12 @@ function getConnectionsForNewStar(newStarIndex) {
         connections.push([88, 89]);
         connections.push([87, 89]);
     } 
+    // 전갈자리
+    else if (newStarIndex === 92) {
+        connections.push([92, 92]);
+    } else if (newStarIndex === 105) {
+        connections.push([102, 105]);
+    }
     // 기본 연결 
     else {
         connections.push([newStarIndex - 1, newStarIndex]);
