@@ -1,25 +1,61 @@
-const todoList = document.getElementById('todoList');
 const todoItemsContainer = document.getElementById('todoItems');
-const toggleTodoListBtn = document.getElementById('toggleTodoList');
 
-document.addEventListener("DOMContentLoaded", function () {
-    const todoList = document.getElementById("todoList");
-    const toggleButton = document.getElementById("toggleTodoList");
+const todoList = document.getElementById('todoList');
+const collectStarsBtn = document.getElementById('collectStarsBtn');
+const closeBtn = document.querySelector('.close-btn'); 
+const addCategoryBtn = document.getElementById('addCategoryBtn');
 
-    toggleButton.addEventListener("click", function () {
-        todoList.classList.toggle("show");
-
-        // 정확한 너비 계산
-        const todoWidth = todoList.getBoundingClientRect().width;
-
-        if (todoList.classList.contains("show")) {
-            toggleButton.style.right = `${todoWidth}px`;  // 리스트가 열린 후 버튼 이동
-        } else {
-            toggleButton.style.right = "0px";   // 닫힐 때 원래 위치로
-        }
-    });
+// 별 모으기 버튼 클릭 시 투두리스트 표시
+collectStarsBtn.addEventListener('click', () => {
+    todoList.classList.add('show');  // 투두리스트를 화면에 표시
+    collectStarsBtn.style.display = 'none';  // '별 모으기' 글씨 숨기기
 });
 
+// 닫기 버튼 클릭 시 투두리스트 숨기기
+closeBtn.addEventListener('click', () => {
+    todoList.classList.remove('show'); // 투두리스트 숨기기
+    collectStarsBtn.style.display = 'block'; // '별 모으기' 글씨 다시 보이게 하기
+});
+
+// Esc 키 눌렀을 때도 투두리스트 숨기기
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {  // Esc 키가 눌렸을 때
+        todoList.classList.remove('show');  // 투두리스트 숨기기
+        collectStarsBtn.style.display = 'block';  // '별 모으기' 글씨 다시 보이게
+    }
+});
+
+// 날짜를 YYYY-MM-DD 형식으로 반환하는 함수
+function getFormattedDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// 페이지가 로드될 때 오늘 날짜를 표시
+window.addEventListener('load', () => {
+    const currentDate = new Date();
+    const formattedDate = getFormattedDate(currentDate);
+    
+    // 날짜 표시 영역이 없으면 생성
+    let dateDisplay = document.querySelector('.date-display');
+    if (!dateDisplay) {
+        dateDisplay = document.createElement('div');
+        dateDisplay.classList.add('date-display');
+        document.body.appendChild(dateDisplay);
+    }
+
+    dateDisplay.textContent = formattedDate;
+});
+
+// 카테고리 추가 버튼 클릭 시 처리
+addCategoryBtn.addEventListener('click', () => {
+    alert('카테고리 추가 기능을 추가하세요!');
+    // 카테고리 추가 기능을 여기에 구현하세요.
+});
+
+/* ======================================= 리메이크 이전 코드 ======================================= */
 
 // 할 일 추가 버튼 클릭 시 실행
 document.querySelector('.add-todo').addEventListener('click', () => {
@@ -97,75 +133,3 @@ document.querySelector('.add-todo').addEventListener('click', () => {
     // 생성된 항목에 자동으로 포커스 주기
     todoText.focus();
 });
-
-// 페이지가 로드될 때 오늘 날짜를 표시
-window.addEventListener('load', () => {
-    const currentDate = new Date();
-    const formattedDate = getFormattedDate(currentDate);
-    document.querySelector('.date-display').textContent = formattedDate;
-});
-
-// 오늘 할 일 완료 버튼 클릭 시 날짜 하루 증가
-document.querySelector('.end-day').addEventListener('click', () => {
-    const todoItemsContainer = document.getElementById('todoItems');
-    const completedTasks = todoItemsContainer.querySelectorAll('.todo-item input:checked'); // 완료된 항목 수
-
-    // 투두 항목 초기화
-    todoItemsContainer.innerHTML = '';
-
-    // 기존 날짜를 가져와서 하루 증가
-    const currentDate = new Date(document.querySelector('.date-display').textContent);
-    currentDate.setDate(currentDate.getDate() + 1); // 하루 더하기
-
-    // 새로운 날짜 포맷
-    const newDate = getFormattedDate(currentDate);
-
-    // 날짜 표시 영역에 새로운 날짜 넣기
-    document.querySelector('.date-display').textContent = newDate;
-
-    // 0.2초 후에 투두리스트 숨기기 (슬라이딩으로 들어가게)
-    setTimeout(() => {
-        document.getElementById('todoList').classList.remove('show'); // 투두리스트 숨기기
-        
-        // ✅ 토글 버튼 위치 초기화 (오른쪽 끝으로 복귀)
-        toggleTodoListBtn.style.right = "0px"; 
-    }, 200); // 0.2초 후에 실행
-
-    // 완료된 할 일 수 만큼 별 추가
-    addStars(completedTasks.length);
-});
-
-
-// 날짜를 YYYY-MM-DD 형식으로 반환하는 함수
-function getFormattedDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-}
-
-//  ============================== 테스트용 코드 ==============================
-// ============================================================================
-document.addEventListener('keydown', function(event) { 
-    if (event.key === '8') {
-        addStars(100);  
-    }
-    if (event.key === '9') {
-        for (var i = 0; i < constellations.length - 1; i++) {
-            addStars(5); 
-        } 
-        setTimeout(drawLinesBetweenStars, 1000);
-    }9
-    if (event.key === '0') {
-        addStars(10);  
-    }
-});
-window.addEventListener('load', () => {
-    for (var i = 0; i < constellations.length; i++) {
-        //addStars(5); 
-    } 
-    //setTimeout(drawLinesBetweenStars, 1000);
-});
-// ============================================================================
-// ============================================================================

@@ -1,95 +1,112 @@
-/* To-Do 리스트 헤더 */
-.todo-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-/* 공통 버튼 스타일 */
-.button-common {
-    background-color: #5e4a8f;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-/* 버튼 호버 스타일 */
-.button-common:hover {
-    background-color: #4a3870;
-}
-
-/* 할 일 추가 버튼 */
-.add-todo {
-    margin-bottom: 20px;
-}
-
-/* "오늘 하루 끝내기" 버튼 */
-.end-day {
-    margin-bottom: 20px;
-}
-
-/* 투두 리스트 스타일 */
+/* 투두리스트 전체 */
 .todo-list {
+    display: none; /* 초기에는 숨김 */
     position: fixed;
-    top: 50%;
-    right: -52.5%; /* 화면 밖에 위치 */
-    transform: translateY(-50%); /* 세로 중앙 정렬 */
-    width: 50vw;
-    height: 70vh;
-    background-color: rgba(21, 0, 21, 0.9); /* 반투명 보라색 */
-    border-radius: 10px 0 0 10px; /* 왼쪽 위와 아래는 둥글고, 오른쪽은 직각 */
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-    color: white;
-    z-index: 2;
-    transition: right 0.5s ease; /* 부드럽게 오른쪽으로 슬라이딩 */
-    overflow-y: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 20px;
 }
-
-/* 왼쪽 토글 버튼 스타일 (반달 모양) */
-.toggle-todo-list {
-    position: fixed;
-    right: 0%; 
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px; /* 반달 형태를 위한 너비 */
-    height: 80px; /* 높이 조정 */
-    background-color: #5e4a8f1b;
-    color: rgba(255, 255, 255, 0.191);
-    border: none;
-    cursor: pointer;
-    border-radius: 40px 0 0 40px; /* 왼쪽을 둥글게 만들어 반달 모양 */
-    font-size: 18px;
-    z-index: 3; /* 버튼이 투두리스트 위로 오도록 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: right 0.5s ease; 
-}
-
 .todo-list.show {
-    right: 0; /* ❗투두 리스트 화면에 나타남 */
+    display: block;
 }
-
-.todo-list.show + .toggle-todo-list {
-    right: 50vw; /* ❗버튼도 같이 이동 */
-}
-
-/* 버튼 호버 스타일 */
-.toggle-todo-list:hover {
-    background-color: #5e4a8f85;
-    color: rgba(255, 255, 255, 0.467);
-}
-
 .todo-list::-webkit-scrollbar {
     display: none;
 }
+
+/* 별 모으기 버튼 스타일 */
+.collect-stars-btn {
+    position: absolute;
+    bottom: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.2); /* 흰색에 약간 반투명 */
+    background-color: transparent; /* 배경색 제거 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 100; /* 얇은 글씨 */
+    font-size: 27px;
+    transition: color 0.3s ease; /* 호버 효과 */
+    user-select: none; /* 드래그 방지 */
+    pointer-events: all; /* 클릭 이벤트만 허용 */
+}
+/* 마우스를 올렸을 때 글씨색 변화 */
+.collect-stars-btn:hover {
+    color: rgba(255, 255, 255, 0.4); /* 호버 시 글씨색을 완전 흰색으로 변경 */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* 부드러운 텍스트 그림자 추가 */
+}
+/* 클릭 시 (버튼을 눌렀을 때) 효과 */
+.collect-stars-btn:active {
+    color: rgba(255, 255, 255, 0.9); /* 클릭 시 글씨 색을 완전 흰색으로 변경 */
+}
+
+/* 닫기 버튼 스타일 */
+.todo-list .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    background-color: transparent; /* 배경색 제거 */
+    border: none;
+    color: rgba(255, 255, 255, 0.503);
+    font-size: 24px; /* x 크기 조정 */
+    padding: 0;
+    border-radius: 50%; /* 동그란 버튼으로 만들기 */
+    transition: transform 0.3s ease, color 0.3s ease; /* 애니메이션 추가 */
+    user-select: none; /* 드래그 방지 */
+    pointer-events: all; /* 클릭 이벤트만 허용 */
+}
+.todo-list .close-btn:hover {
+    transform: scale(1.2); /* 마우스 오버 시 크기 증가 */
+    color: #ffffffab; /* 마우스 오버 시 색상 변경 */
+}
+
+/* 날짜 표시 스타일 */
+.date-display {
+    position: absolute; /* 화면의 고정된 위치에 배치 */
+    bottom: 30px; /* 아래쪽 모서리에서 10px 떨어지게 */
+    left: 70px; /* 왼쪽 모서리에서 10px 떨어지게 */
+    transform: translateX(-50%); /* 정확히 중앙 정렬 */
+    font-size: 20px; /* 글씨 크기 조정 */
+    font-weight: 100; /* 얇은 글씨 */
+    color: rgba(255, 255, 255, 0.3); /* 흰색 글씨 */
+    background-color: transparent; /* 배경 없애기 */
+    letter-spacing: 1px; /* 글자 간격 조정 */
+    z-index: 120;
+    user-select: none; /* 드래그 방지 */
+}
+
+/* 카테고리 추가 버튼 스타일 */
+.add-category-btn {
+    position: absolute; /* 화면의 고정된 위치에 배치 */
+    bottom: 30px; /* 아래쪽 모서리에서 10px 떨어지게 */
+    right: -50px; /* 왼쪽 모서리에서 10px 떨어지게 */
+    transform: translateX(-50%); /* 정확히 중앙 정렬 */
+    color: rgba(255, 255, 255, 0.3); /* 흰색에 약간 반투명 */
+    background-color: transparent; /* 배경색 제거 */
+    font-size: 20px;
+    font-weight: 100; /* 얇은 글씨 */
+    user-select: none; /* 드래그 방지 */
+    pointer-events: all; /* 클릭 이벤트만 허용 */
+    border: none; /* 테두리 제거 */
+}
+
+/* 마우스를 올렸을 때 글씨색 변화 */
+.add-category-btn:hover {
+    color: rgba(255, 255, 255, 0.4); /* 호버 시 글씨색을 완전 흰색으로 변경 */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* 부드러운 텍스트 그림자 추가 */
+}
+
+/* 클릭 시 (버튼을 눌렀을 때) 효과 */
+.add-category-btn:active {
+    color: rgba(255, 255, 255, 0.7); /* 클릭 시 글씨 색을 완전 흰색으로 변경 */
+}
+
+/* ======================================= 리메이크 이전 코드 ======================================= */
 
 /* 투두 항목 스타일 */
 .todo-item {
@@ -156,18 +173,4 @@
 /* To-Do 항목의 입력란에 포커스를 주었을 때 스타일 */
 .todo-input:focus {
     background-color: rgba(0, 0, 0, 0.1); /* 약간 어두운 배경 */
-}
-
-/* 날짜 표시 스타일 */
-.date-display {
-    font-size: 24px; /* 글씨 크기 크게 */
-    font-weight: 100; /* 얇은 글씨 */
-    color: white; /* 흰색 글씨 */
-    text-align: center;
-    margin: 0 20px; /* 버튼들 간의 간격을 여백으로 조정 */
-    background-color: transparent; /* 배경 없애기 */
-    flex: 1; /* 날짜를 버튼들 사이에 배치 */
-    padding: 5px 0; /* 위아래 여백 추가 */
-    letter-spacing: 1px; /* 글자 간격을 조금 넓혀주기 */
-    margin-top: -30px; /* 날짜를 위로 올리기 */
 }

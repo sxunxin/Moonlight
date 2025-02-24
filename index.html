@@ -16,16 +16,19 @@
     <!-- 땅 배경 (초록색) -->
     <div class="ground"></div>
 
-    <!-- To-Do 리스트 -->
-    <button class="toggle-todo-list" id="toggleTodoList">☰</button>
-    <div class="todo-list" id="todoList">
-        <div class="todo-header">
-            <button class="button-common add-todo">할 일 추가</button>
-            <span class="date-display"></span> <!-- 날짜 표시 영역 -->
-            <button class="button-common end-day">오늘 하루 끝내기</button>
+    <!-- 별 모으기 버튼 -->
+    <div id="collectStarsBtn" class="collect-stars-btn">별 모으기</div>
+
+    <!-- 투두리스트 -->
+    <div id="todoList" class="todo-list">
+        <span class="close-btn">×</span>
+        <button class="add-category-btn">카테고리 추가</button>
+        <div class="date-display"></div> 
+        <!-- <button class="button-common add-todo">할 일 추가</button> -->
+        <!-- <button class="button-common end-day">오늘 하루 끝내기</button> -->
+        <div class="todo-list-content">
         </div>
-        <div id="todoItems"></div>
-    </div>    
+    </div>
 
     <script src="js/stars.js"></script> <!-- 별 관련 JS 파일 -->
     <script src="js/todo.js"></script>  <!-- 투두 리스트 관련 JS 파일 -->
