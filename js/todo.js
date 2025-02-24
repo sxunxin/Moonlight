@@ -119,7 +119,6 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     });
 });
 
-// 카테고리 블록에 할 일 항목 추가하는 함수
 function addTodoToCategory(categoryBlock) {
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
@@ -134,9 +133,37 @@ function addTodoToCategory(categoryBlock) {
     todoInput.contentEditable = true;
     const maxLength = 30; // 최대 글자 수 설정
 
+    // "..." 버튼 생성
+    const todoAbout = document.createElement('button');
+    todoAbout.classList.add('todo-about');
+    todoAbout.textContent = '...';
+
+    // 컨텍스트 메뉴 생성
+    const menu = document.createElement('div');
+    menu.classList.add('todo-menu');
+
+    const editButton = document.createElement('button');
+    editButton.classList.add('edit-todo');
+    editButton.textContent = '수정하기';
+
+    const routineButton = document.createElement('button');
+    routineButton.classList.add('routine-todo');
+    routineButton.textContent = '루틴등록';
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete-todo');
+    deleteButton.textContent = '삭제하기';
+
+    // 메뉴에 버튼 추가
+    menu.appendChild(editButton);
+    menu.appendChild(routineButton);
+    menu.appendChild(deleteButton);
+
     // 체크박스를 할 일 항목에 추가
     todoItem.appendChild(checkbox);
     todoItem.appendChild(todoInput);
+    todoItem.appendChild(todoAbout);
+    todoItem.appendChild(menu);
 
     // 할 일 항목을 카테고리 블록에 추가 (맨 위에서 1칸 아래에 추가)
     categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
@@ -181,14 +208,59 @@ function addTodoToCategory(categoryBlock) {
         }
     });
 
-    // 체크박스를 클릭하면 체크 상태에 따라 항목을 맨 아래로 이동
+    // 체크박스를 클릭하면 체크 상태에 따라 항목을 이동 및 스타일 변경
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
             // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
             categoryBlock.appendChild(todoItem);
+            todoItem.classList.add('checked'); // 스타일 변경
         } else {
             // 체크가 풀리면 항목을 카테고리 블록의 맨 위에서 1칸 아래로 이동
             categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
+            todoItem.classList.remove('checked'); // 스타일 원래대로 복구
         }
+    });
+
+    // '⋯' 버튼 클릭 시 메뉴 표시/숨김
+    todoAbout.addEventListener('click', (e) => {
+        e.stopPropagation(); // 이벤트 전파 방지
+
+        // '...' 버튼 숨기기
+        todoAbout.style.display = 'none';
+
+        // 현재 클릭된 투두만 메뉴 표시, 다른 메뉴는 닫기
+        document.querySelectorAll('.todo-item').forEach(item => {
+            if (item !== todoItem) {
+                item.classList.remove('show-menu');
+            }
+        });
+
+        todoItem.classList.toggle('show-menu');
+    });
+
+    // 다른 곳을 클릭하면 메뉴 닫기
+    document.addEventListener('click', () => {
+        todoAbout.style.display = 'inline'; 
+        todoItem.classList.remove('show-menu');
+    });
+
+    // 메뉴 클릭 시 닫히지 않도록 이벤트 전파 방지
+    menu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // 삭제 버튼 기능
+    deleteButton.addEventListener('click', () => {
+        todoAbout.style.display = 'inline'; 
+        todoItem.classList.remove('show-menu');
+        todoItem.remove();
+    });
+
+    // 수정 버튼 기능
+    editButton.addEventListener('click', () => {
+        todoInput.contentEditable = true;
+        todoAbout.style.display = 'inline'; 
+        todoItem.classList.remove('show-menu');
+        todoInput.focus();
     });
 }
