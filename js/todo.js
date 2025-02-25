@@ -12,6 +12,13 @@ collectStarsBtn.addEventListener('click', () => {
     collectStarsBtn.style.display = 'none';  // '별 모으기' 글씨 숨기기
 });
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {  
+        todoList.classList.add('show');  // 투두리스트를 화면에 표시
+        collectStarsBtn.style.display = 'none';  // '별 모으기' 글씨 숨기기
+    }
+});
+
 // 닫기 버튼 클릭 시 투두리스트 숨기기
 closeBtn.addEventListener('click', () => {
     todoList.classList.remove('show'); // 투두리스트 숨기기
@@ -20,7 +27,7 @@ closeBtn.addEventListener('click', () => {
 
 // Esc 키 눌렀을 때도 투두리스트 숨기기
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {  // Esc 키가 눌렸을 때
+    if (e.key === 'Escape' ) {  // Esc 키가 눌렸을 때
         todoList.classList.remove('show');  // 투두리스트 숨기기
         collectStarsBtn.style.display = 'block';  // '별 모으기' 글씨 다시 보이게
     }
@@ -171,9 +178,7 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
             categoryBlock.style.opacity = 1;
             categoryBlock.style.zIndex = ++zIndexCounter;
         }, { once: true });
-    });
-    
-    
+    });    
 });
 
 function positionNewCategoryBlock(newBlock, container) {
@@ -185,11 +190,22 @@ function positionNewCategoryBlock(newBlock, container) {
     let isOverlapping;
     let attempts = 0;
     const maxAttempts = 50; // 최대 시도 횟수
+    const centerX = containerRect.width / 2;
+    const centerY = containerRect.height / 2;
+    const maxDistance = Math.sqrt(Math.pow(containerRect.width, 2) + Math.pow(containerRect.height, 2)) / 2; // 중심에서 가장 멀리 떨어질 수 있는 거리
 
     do {
         isOverlapping = false;
-        x = Math.random() * (containerRect.width - blockSize);
-        y = Math.random() * (containerRect.height - blockSize);
+        let distanceFromCenter = (attempts / maxAttempts) * maxDistance; // 시도 횟수에 비례해 거리 증가
+        let angle = Math.random() * 2 * Math.PI; // 랜덤한 각도
+
+        // 중심 근처부터 시작해서 점차 바깥쪽으로 이동
+        x = centerX + distanceFromCenter * Math.cos(angle);
+        y = centerY + distanceFromCenter * Math.sin(angle);
+
+        // 위치가 컨테이너 범위를 벗어나지 않도록 조정
+        x = Math.min(Math.max(x, 0), containerRect.width - blockSize);
+        y = Math.min(Math.max(y, 0), containerRect.height - blockSize);
 
         blocks.forEach(block => {
             const rect = block.getBoundingClientRect();
@@ -206,17 +222,16 @@ function positionNewCategoryBlock(newBlock, container) {
         attempts++;
     } while (isOverlapping && attempts < maxAttempts);
 
-    // 만약 50번 시도 후에도 겹치지 않는 위치를 찾지 못했다면, 그냥 랜덤한 위치에 배치
+    // 만약 50번 시도 후에도 겹치지 않는 위치를 찾지 못했다면, 그냥 중앙에 배치
     if (isOverlapping) {
-        x = Math.random() * (containerRect.width - blockSize);
-        y = Math.random() * (containerRect.height - blockSize);
+        x = centerX - blockSize / 2;
+        y = centerY - blockSize / 2;
     }
 
     newBlock.style.position = 'absolute';
     newBlock.style.left = `${x}px`;
     newBlock.style.top = `${y}px`;
 }
-
 
 // 투두 생성 
 function addTodoToCategory(categoryBlock) {
