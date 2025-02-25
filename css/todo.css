@@ -135,14 +135,61 @@
     white-space: nowrap; /* 줄바꿈 방지 */
     margin: 5px;
     line-height: 30px;
-    transition: transform 0.3s ease-in-out, width 0.3s ease, height 0.3s ease;
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.2s ease, box-shadow 0.3s ease; /* 한 번의 transition으로 여러 속성 처리 */
     position: absolute; /* 자유롭게 위치 배치 */
     overflow: hidden;
 }
 
 .category-block:hover {
+    border-top-left-radius: 0px;
     transform: scale(1.04); /* 살짝 커지는 효과 */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가로 부드러운 확장 느낌 */
 }
+
+.corner-handle {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(144, 98, 179, 0.213);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1; /* 원이 다른 요소보다 위에 보이도록 */
+}
+
+.category-block:hover .corner-handle {
+    opacity: 1;
+    visibility: visible;
+}
+
+.corner-handle:hover {
+    transform: scale(1.5);
+}
+
+.corner-handle:active {
+    background-color: rgba(144, 98, 179, 0.055) !important;
+    transform: scale(4.5);
+}
+
+.category-block {
+    position: relative;
+}
+
+.category-block:hover .corner-handle::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: transparent;
+    z-index: -1; /* 클릭 영역만 확장, 실제 버튼은 그 위에 */
+}
+
 
 /* 카테고리 입력칸 */
 .category-input {
