@@ -196,8 +196,8 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     cornerHandle.addEventListener('mousedown', (e) => {
         e.preventDefault();
         
-        let shiftX = e.offsetX;
-        let shiftY = e.offsetY + 20.5;
+        let shiftX = e.offsetX + 10;
+        let shiftY = e.offsetY + 40.5;
         
         categoryBlock.classList.add('dragging');
         categoryBlock.style.opacity = 0.5;
