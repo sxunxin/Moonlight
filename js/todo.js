@@ -1,10 +1,10 @@
 const todoList = document.getElementById('todoList');
 const collectStarsBtn = document.getElementById('collectStarsBtn');
 const closeBtn = document.querySelector('.close-btn'); 
-const addCategoryBtn = document.getElementById('addCategoryBtn');
 const categoryContainer = document.getElementById('categoryContainer');
 
 let zIndexCounter = 2000;
+let isDeleteMode = false; // 삭제 모드 상태
 
 // 별 모으기 버튼 클릭 시 투두리스트 표시
 collectStarsBtn.addEventListener('click', () => {
@@ -56,6 +56,53 @@ window.addEventListener('load', () => {
 
     dateDisplay.textContent = formattedDate;
 });
+
+document.getElementById('categoryBtn').addEventListener('click', () => {
+    const categoryBtn = document.getElementById('categoryBtn');
+    const categoryActions = document.getElementById('categoryActions');
+
+    // 카테고리 버튼 클릭 시
+    if (categoryBtn.style.display !== 'none') {
+        categoryBtn.style.display = 'none';  // 카테고리 버튼 숨기기
+        categoryActions.style.display = 'flex';  // 추가/삭제 버튼 보이기
+    } else {
+        categoryBtn.style.display = 'flex';  // 카테고리 버튼 다시 보이기
+        categoryActions.style.display = 'none';  // 추가/삭제 버튼 숨기기
+    }
+});
+
+// 다른 곳을 클릭했을 때 카테고리 버튼 다시 보이기
+document.addEventListener('click', (event) => {
+    const categoryBtn = document.getElementById('categoryBtn');
+    const categoryActions = document.getElementById('categoryActions');
+    
+    // 카테고리 버튼이나 추가/삭제 버튼이 아닌 곳 클릭 시
+    if (!categoryBtn.contains(event.target) && !categoryActions.contains(event.target)) {
+        categoryBtn.style.display = 'block';
+        categoryActions.style.display = 'none';  // 추가/삭제 버튼 숨기기
+        isDeleteMode = false;
+        updateAddTodoButtons();
+    }
+});
+
+// 카테고리 블록 삭제
+document.getElementById("deleteCategoryBtn").addEventListener("click", function() {
+    // isDeleteMode 상태를 토글 (true -> false, false -> true)
+    isDeleteMode = !isDeleteMode;
+    updateAddTodoButtons();
+});
+
+function updateAddTodoButtons() {
+    document.querySelectorAll(".add-todo-btn").forEach(button => {
+        if (isDeleteMode) {
+            // 삭제 모드일 때: deleteMode 클래스를 추가하여 회전 및 색상 변경
+            button.classList.add("deleteMode");
+        } else {
+            // 삭제 모드 아닐 때: deleteMode 클래스를 제거하여 원래 상태로 돌아가기
+            button.classList.remove("deleteMode");
+        }
+    });
+}
 
 // 카테고리 블록 추가
 document.getElementById('addCategoryBtn').addEventListener('click', () => {
@@ -235,6 +282,15 @@ function positionNewCategoryBlock(newBlock, container) {
 
 // 투두 생성 
 function addTodoToCategory(categoryBlock) {
+
+    if (isDeleteMode) {
+        if (categoryBlock) {
+            isDeleteMode = false;
+            updateAddTodoButtons();
+            categoryBlock.remove(); 
+        }
+    }
+
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
 

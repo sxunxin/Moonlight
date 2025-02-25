@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moonlight</title>
-    <link rel="stylesheet" href="css/todo.css">  <!-- 투두 리스트 관련 스타일시트 -->
+    <link rel="stylesheet" href="css/todo.css">  <!-- 투두 관련 스타일시트 -->
     <link rel="stylesheet" href="css/stars.css"> <!-- 별 관련 스타일시트 -->
 </head>
 <body>
     <!-- 밤하늘 배경 -->
     <div class="sky">
-        <div id="moon"></div> <!-- 달 추가 -->
+        <div id="moon"></div> <!-- 달 -->
     </div>
     
-    <!-- 땅 배경 (초록색) -->
+    <!-- 땅 배경 -->
     <div class="ground"></div>
 
     <!-- 별 모으기 버튼 -->
@@ -21,14 +21,28 @@
 
     <!-- 투두리스트 -->
     <div id="todoList" class="todo-list">
+
+        <!-- 투두리스트 닫기 버튼-->
         <span class="close-btn">×</span>
-        <button id="addCategoryBtn" class="add-category-btn">카테고리 추가</button>
-        <div class="date-display"></div> 
+
+        <!-- 카테고리, 추가, 삭제 버튼 -->
+        <div class="category-wrapper">
+            <button id="categoryBtn" class="category-btn">카테고리</button>
+            <div id="categoryActions" class="category-actions">
+                <button id="addCategoryBtn" class="category-action-btn">추가</button>
+                <button id="deleteCategoryBtn" class="category-action-btn">삭제</button>
+            </div>
+        </div>
+        
+        <!-- 날짜 표시 -->
+        <div class="date-display"></div>
+      
+        <!-- 카테고리/투두 컨테이너 -->
         <div id="categoryContainer" class="category-container"></div>
         </div>
     </div>
 
     <script src="js/stars.js"></script> <!-- 별 관련 JS 파일 -->
-    <script src="js/todo.js"></script>  <!-- 투두 리스트 관련 JS 파일 -->
+    <script src="js/todo.js"></script>  <!-- 투두 관련 JS 파일 -->
 </body>
 </html>
