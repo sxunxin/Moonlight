@@ -4,6 +4,8 @@ const closeBtn = document.querySelector('.close-btn');
 const addCategoryBtn = document.getElementById('addCategoryBtn');
 const categoryContainer = document.getElementById('categoryContainer');
 
+let zIndexCounter = 2000;
+
 // 별 모으기 버튼 클릭 시 투두리스트 표시
 collectStarsBtn.addEventListener('click', () => {
     todoList.classList.add('show');  // 투두리스트를 화면에 표시
@@ -55,6 +57,7 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     // 새로운 카테고리 블록 만들기
     const categoryBlock = document.createElement('div');
     categoryBlock.classList.add('category-block');
+    categoryBlock.setAttribute('draggable', 'true');  // 드래그 가능하도록 설정
 
     // 입력 필드 생성 (contentEditable)
     const categoryInput = document.createElement('div');
@@ -72,6 +75,9 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     categoryBlock.appendChild(addTodoBtn);
 
     categoryContainer.appendChild(categoryBlock);
+
+    // 새로운 블록의 위치 설정 (겹치지 않게)
+    positionNewCategoryBlock(categoryBlock, categoryContainer);
 
     // 생성된 항목에 자동으로 포커스 주기
     categoryInput.focus();
@@ -117,7 +123,107 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     addTodoBtn.addEventListener('click', () => {
         addTodoToCategory(categoryBlock);
     });
+
+    document.addEventListener('click', (e) => {
+        const categoryBlock = e.target.closest('.category-block'); // 클릭한 요소가 블록인지 확인
+        if (categoryBlock) {
+            categoryBlock.style.zIndex = ++zIndexCounter; // 클릭한 블록을 최상위로 설정
+        }
+    });
+    
+
+    // 드래그 시작 시 위치 저장
+    categoryBlock.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', null);  // Firefox에서 필요
+        categoryBlock.classList.add('dragging');    // 드래그 중 스타일 변경
+        categoryBlock.style.opacity = 0.001;          // 드래그 중 투명도 설정
+    });
+
+    // 드래그 종료 시 클래스 제거 및 투명도 복원
+    categoryBlock.addEventListener('dragend', (e) => {
+        categoryBlock.classList.remove('dragging');
+        categoryBlock.style.opacity = 1;  // 드래그 종료 후 원래 상태로 복원
+        categoryBlock.style.zIndex = ++zIndexCounter;
+
+        // 드래그가 끝날 때 위치 설정
+        const rect = categoryContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left - categoryBlock.offsetWidth / 2;
+        const y = e.clientY - rect.top - categoryBlock.offsetHeight / 2;
+        categoryBlock.style.left = `${x}px`;
+        categoryBlock.style.top = `${y}px`;
+    });
+
+    // 드래그가 가능하도록 카테고리 컨테이너에 드래그 오버 처리
+    categoryContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();  // 기본 동작 방지
+        const dragging = document.querySelector('.dragging');
+        const afterElement = getDragAfterElement(categoryContainer, e.clientY);
+        if (afterElement == null) {
+            categoryContainer.appendChild(dragging);
+        } else {
+            categoryContainer.insertBefore(dragging, afterElement);
+        }
+    });
 });
+
+// 드래그가 끝날 위치를 찾는 함수
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.category-block:not(.dragging)')];
+    return draggableElements.reduce(
+        (closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        },
+        { offset: Number.NEGATIVE_INFINITY }
+    ).element;
+}
+
+function positionNewCategoryBlock(newBlock, container) {
+    const blocks = document.querySelectorAll('.category-block');
+    const containerRect = container.getBoundingClientRect();
+    const blockSize = 80; // 블록 크기 (조절 가능)
+    
+    let x, y;
+    let isOverlapping;
+    let attempts = 0;
+    const maxAttempts = 50; // 최대 시도 횟수
+
+    do {
+        isOverlapping = false;
+        x = Math.random() * (containerRect.width - blockSize);
+        y = Math.random() * (containerRect.height - blockSize);
+
+        blocks.forEach(block => {
+            const rect = block.getBoundingClientRect();
+            if (
+                x < rect.right - containerRect.left &&
+                x + blockSize > rect.left - containerRect.left &&
+                y < rect.bottom - containerRect.top &&
+                y + blockSize > rect.top - containerRect.top
+            ) {
+                isOverlapping = true;
+            }
+        });
+
+        attempts++;
+    } while (isOverlapping && attempts < maxAttempts);
+
+    // 만약 50번 시도 후에도 겹치지 않는 위치를 찾지 못했다면, 그냥 랜덤한 위치에 배치
+    if (isOverlapping) {
+        x = Math.random() * (containerRect.width - blockSize);
+        y = Math.random() * (containerRect.height - blockSize);
+    }
+
+    newBlock.style.position = 'absolute';
+    newBlock.style.left = `${x}px`;
+    newBlock.style.top = `${y}px`;
+}
+
 
 // 투두 생성 
 function addTodoToCategory(categoryBlock) {
@@ -273,4 +379,3 @@ function addTodoToCategory(categoryBlock) {
     });
 
 }
-
