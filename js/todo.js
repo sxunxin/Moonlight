@@ -136,24 +136,35 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     
     cornerHandle.addEventListener('mousedown', (e) => {
         e.preventDefault();
-    
+        
         let shiftX = e.offsetX;
         let shiftY = e.offsetY + 20.5;
-    
+        
         categoryBlock.classList.add('dragging');
         categoryBlock.style.opacity = 0.5;
-    
+        
         function moveAt(pageX, pageY) {
-            categoryBlock.style.left = `${pageX - shiftX}px`;
-            categoryBlock.style.top = `${pageY - shiftY}px`;
+            const containerRect = categoryContainer.getBoundingClientRect();
+            const blockRect = categoryBlock.getBoundingClientRect();
+            
+            // X 좌표가 컨테이너의 왼쪽, 오른쪽 경계를 넘지 않도록 제한
+            let newX = pageX - shiftX;
+            newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - blockRect.width));
+            
+            // Y 좌표가 컨테이너의 위쪽, 아래쪽 경계를 넘지 않도록 제한
+            let newY = pageY - shiftY;
+            newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - blockRect.height));
+            
+            categoryBlock.style.left = `${newX}px`;
+            categoryBlock.style.top = `${newY}px`;
         }
-    
+        
         function onMouseMove(event) {
             moveAt(event.pageX, event.pageY);
         }
-    
+        
         document.addEventListener('mousemove', onMouseMove);
-    
+        
         document.addEventListener('mouseup', () => {
             document.removeEventListener('mousemove', onMouseMove);
             categoryBlock.classList.remove('dragging');
@@ -161,6 +172,7 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
             categoryBlock.style.zIndex = ++zIndexCounter;
         }, { once: true });
     });
+    
     
 });
 
