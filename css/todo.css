@@ -83,6 +83,9 @@
 /* 카테고리 버튼을 감싸는 테두리 */
 .category-wrapper {
     position: absolute;
+    top: 5.3%;  /* 상단에서 수직 중앙 위치 */
+    left: 7%;  /* 왼쪽에서 바로 옆으로 위치 */
+    transform: translateX(10px) translateY(-50%);  
     display: inline-block;
     border: 1px solid rgba(255, 255, 255, 0.3);  /* 흰색 테두리 */
     border-radius: 15px;  /* 둥근 모서리 */
@@ -371,4 +374,39 @@
 
 .routine-item {
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 별 만들기 버튼 스타일 */
+.starBtn-wrapper {
+    position: absolute;
+    top: 5.3%;  /* 상단에서 수직 중앙 위치 */
+    left: -0.6%;  /* 왼쪽에서 바로 옆으로 위치 */
+    transform: translateX(10px) translateY(-50%);  
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.3);  /* 흰색 테두리 */
+    border-radius: 15px;  /* 둥근 모서리 */
+    padding: 8px 14px; 
+    width: auto;
+    height: 20px; 
+    transition: all 0.3s ease;
+    background-color: #ffffff00;
+    z-index: 20000;
+    margin: -15px 10px;
+}
+
+.create-star-btn {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    font-weight: 300;
+    user-select: none;
+    background: transparent;
+    border: none;
+    z-index: 22000;
+}
+
+.create-star-btn:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+.create-star-btn:active {
+    color: rgba(255, 255, 255, 0.4);
 }

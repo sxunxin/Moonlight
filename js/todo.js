@@ -1,4 +1,3 @@
-const todoList = document.getElementById('todoList');
 const collectStarsBtn = document.getElementById('collectStarsBtn');
 const closeBtn = document.querySelector('.close-btn'); 
 const categoryContainer = document.getElementById('categoryContainer');
@@ -106,6 +105,12 @@ function updateAddTodoButtons() {
 
 // 카테고리 블록 추가
 document.getElementById('addCategoryBtn').addEventListener('click', () => {
+
+    if (isDeleteMode) {
+        isDeleteMode = false;  // 삭제 모드 해제
+        updateAddTodoButtons();  // 버튼 상태 업데이트
+    }
+
     const categoryContainer = document.getElementById('categoryContainer');
 
     // 새로운 카테고리 블록 만들기
@@ -381,6 +386,7 @@ function addTodoToCategory(categoryBlock) {
 
     // 체크박스를 클릭하면 체크 상태에 따라 항목을 이동 및 스타일 변경
     checkbox.addEventListener('change', () => {
+        const todoItem = checkbox.closest('.todo-item'); // 체크박스를 포함한 부모 항목
         if (checkbox.checked) {
             // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
             categoryBlock.appendChild(todoItem);
@@ -391,6 +397,7 @@ function addTodoToCategory(categoryBlock) {
             todoItem.classList.remove('checked'); // 스타일 원래대로 복구
         }
     });
+    
 
     // '⋯' 버튼 클릭 시 메뉴 표시/숨김
     todoAbout.addEventListener('click', (e) => {
@@ -443,3 +450,57 @@ function addTodoToCategory(categoryBlock) {
     });
 
 }
+
+// 별 만들기 
+document.querySelector('.create-star-btn').addEventListener('click', function() {
+    // 체크된 투두 항목들을 선택
+    const checkedTodos = document.querySelectorAll('.todo-item input[type="checkbox"]:checked');
+    const cnt = checkedTodos.length;  // 체크된 항목의 개수
+
+    if (cnt > 0) {
+        // 체크된 항목들에 대해 처리
+        checkedTodos.forEach(checkbox => {
+            const todoItem = checkbox.closest('.todo-item'); // 체크박스를 포함한 부모 투두 항목
+            const isRoutine = todoItem.isRoutine; // 루틴 여부 확인 (isRoutine 속성으로 확인)
+
+            if (isRoutine) {
+                // 루틴인 경우 체크 해제만 하고, 이동 및 스타일 변경
+                checkbox.checked = false;
+
+                // 체크박스 상태에 따른 이동 및 스타일 변경
+                const categoryBlock = todoItem.closest('.category-block');
+                if (checkbox.checked) {
+                    // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
+                    categoryBlock.appendChild(todoItem);
+                    todoItem.classList.add('checked'); // 스타일 변경
+                } else {
+                    // 체크가 풀리면 항목을 카테고리 블록의 맨 위에서 1칸 아래로 이동
+                    categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
+                    todoItem.classList.remove('checked'); // 스타일 원래대로 복구
+                }
+            } else {
+                // 루틴이 아니면 항목을 제거
+                todoItem.remove();
+            }
+        });
+
+        // 1초 기다린 후, addStars 실행
+        setTimeout(() => {
+            // 투두리스트 숨기기
+            const todoList = document.querySelector('.todo-list');
+            if (todoList) {
+                todoList.classList.remove('show');
+            }
+
+            // '별 모으기' 글씨 다시 보이게 하기
+            const collectStarsBtn = document.querySelector('.collect-stars-btn');
+            if (collectStarsBtn) {
+                collectStarsBtn.style.display = 'block';
+            }
+
+            // addStars 함수 호출
+            addStars(cnt);
+
+        }, 500); // 대기 후 실행
+    }
+});
