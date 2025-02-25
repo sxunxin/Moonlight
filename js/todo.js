@@ -387,6 +387,7 @@ function addTodoToCategory(categoryBlock) {
     // 체크박스를 클릭하면 체크 상태에 따라 항목을 이동 및 스타일 변경
     checkbox.addEventListener('change', () => {
         const todoItem = checkbox.closest('.todo-item'); // 체크박스를 포함한 부모 항목
+        updateStarButtonBorder();
         if (checkbox.checked) {
             // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
             categoryBlock.appendChild(todoItem);
@@ -484,6 +485,8 @@ document.querySelector('.create-star-btn').addEventListener('click', function() 
             }
         });
 
+        updateStarButtonBorder();
+
         // 1초 기다린 후, addStars 실행
         setTimeout(() => {
             // 투두리스트 숨기기
@@ -504,3 +507,36 @@ document.querySelector('.create-star-btn').addEventListener('click', function() 
         }, 500); // 대기 후 실행
     }
 });
+
+// 체크된 투두 항목을 감지하여 개수를 확인하는 함수
+function updateStarButtonBorder() {
+    const checkedTodos = document.querySelectorAll('.todo-item input[type="checkbox"]:checked');
+    const starBtnWrapper = document.querySelector('.starBtn-wrapper');
+    const createStarBtn = document.querySelector('.create-star-btn');
+    
+    // 5개 이상 체크된 항목이 있으면 버튼 스타일을 업데이트
+    if (checkedTodos.length >= 5) {
+        if (starBtnWrapper) {
+            starBtnWrapper.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+            starBtnWrapper.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.6), 0 0 15px rgba(255, 255, 255, 0.4)';
+        }
+    } else {
+        // 체크된 항목이 5개 미만이면 버튼 스타일을 원래대로 되돌림
+        if (starBtnWrapper) {
+            starBtnWrapper.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            starBtnWrapper.style.boxShadow = 'none'; // 그림자 없애기
+        }
+    }
+
+    // 체크된 항목이 0개일 때만 글씨색을 연하게 변경
+    if (checkedTodos.length === 0) {
+        if (createStarBtn) {
+            createStarBtn.classList.add('disabled'); // disabled 클래스 추가
+        }
+    } else {
+        if (createStarBtn) {
+            createStarBtn.classList.remove('disabled'); // disabled 클래스 제거
+        }
+    }
+}
+updateStarButtonBorder();
