@@ -288,3 +288,10 @@
     display: flex;
 }
 
+.routine-active {
+    background-color: rgba(123, 91, 147, 0.282) !important; 
+}
+
+.routine-item {
+    border: 1px solid rgba(255, 255, 255, 0.26) !important;
+}

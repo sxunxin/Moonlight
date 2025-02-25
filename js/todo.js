@@ -119,6 +119,7 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     });
 });
 
+// 투두 생성 
 function addTodoToCategory(categoryBlock) {
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
@@ -144,15 +145,15 @@ function addTodoToCategory(categoryBlock) {
 
     const editButton = document.createElement('button');
     editButton.classList.add('edit-todo');
-    editButton.textContent = '수정하기';
+    editButton.textContent = '수정';
 
     const routineButton = document.createElement('button');
     routineButton.classList.add('routine-todo');
-    routineButton.textContent = '루틴등록';
+    routineButton.textContent = '루틴';
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-todo');
-    deleteButton.textContent = '삭제하기';
+    deleteButton.textContent = '삭제';
 
     // 메뉴에 버튼 추가
     menu.appendChild(editButton);
@@ -263,4 +264,13 @@ function addTodoToCategory(categoryBlock) {
         todoItem.classList.remove('show-menu');
         todoInput.focus();
     });
+
+    // 루틴 버튼 기능
+    routineButton.addEventListener('click', () => {
+        todoItem.isRoutine = !todoItem.isRoutine; // 루틴 상태 토글
+        routineButton.classList.toggle('routine-active', todoItem.isRoutine);
+        todoItem.classList.toggle('routine-item', todoItem.isRoutine); // 테두리 변경
+    });
+
 }
+
