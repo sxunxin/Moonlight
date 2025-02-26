@@ -21,6 +21,7 @@
 
 /* 별 모으기 버튼 스타일 */
 .collect-stars-btn {
+    font-family: 'Gowun Batang', serif;
     position: absolute;
     bottom: 7%;
     left: 50%;
@@ -66,8 +67,9 @@
 
 /* 날짜 표시 스타일 */
 .date-display {
+    font-family: 'Gowun Batang', serif;
     position: absolute; /* 화면의 고정된 위치에 배치 */
-    bottom: 30px; /* 아래쪽 모서리에서 10px 떨어지게 */
+    bottom: 40px; /* 아래쪽 모서리에서 10px 떨어지게 */
     left: 70px; /* 왼쪽 모서리에서 10px 떨어지게 */
     transform: translateX(-50%); /* 정확히 중앙 정렬 */
     font-size: 20px; /* 글씨 크기 조정 */
@@ -212,7 +214,7 @@
 
 /* 카테고리 입력칸 */
 .category-input {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.566);
     background-color: transparent;
     border: none;
     outline: none;
@@ -223,7 +225,7 @@
     user-select: none;
     text-align: center;
     margin-right: 20px;
-    font-weight: 400;
+    font-weight: 350;
 }
 
 /* 투두 추가 버튼 */
