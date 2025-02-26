@@ -29,6 +29,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' ) {  // Esc 키가 눌렸을 때
         todoList.classList.remove('show');  // 투두리스트 숨기기
         collectStarsBtn.style.display = 'block';  // '별 모으기' 글씨 다시 보이게
+        devModal.style.display = "none"; // 모달 끄기
     }
 });
 
@@ -542,3 +543,20 @@ function updateStarButtonBorder() {
     }
 }
 updateStarButtonBorder();
+
+// 개발자 모드 버튼과 모달 요소
+const devModeBtn = document.getElementById("devModeBtn");
+const devModal = document.getElementById("devModal");
+
+// 개발자 모드 버튼 클릭 시 모달 열기
+devModeBtn.onclick = function() {
+    devModal.style.display = "flex"; // 모달 표시 (flex로 중앙 정렬)
+    devModal.style.pointerEvents = "auto"; // 모달 배경 클릭도 가능하게 설정
+}
+
+// 모달 밖을 클릭하면 모달 닫기
+window.onclick = function(event) {
+    if (event.target === devModal) { // 클릭된 요소가 모달 바깥일 때
+        devModal.style.display = "none"; // 모달 숨기기
+    }
+}

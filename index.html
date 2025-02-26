@@ -30,17 +30,33 @@
         <!-- 투두리스트 닫기 버튼-->
         <span class="close-btn">×</span>
 
-        <!-- 별 만들기 버튼 추가 -->
-        <div class="starBtn-wrapper">
-            <button id="createStarBtn" class="create-star-btn">별 만들기</button>
+        <!-- 버튼들을 감싸는 컨테이너 -->
+        <div class="button-container">
+            <!-- 별 만들기 버튼 추가 -->
+            <div class="starBtn-wrapper">
+                <button id="createStarBtn" class="create-star-btn">별 만들기</button>
+            </div>
+
+            <!-- 카테고리, 추가, 삭제 버튼 -->
+            <div class="category-wrapper">
+                <button id="categoryBtn" class="category-btn">카테고리</button>
+                <div id="categoryActions" class="category-actions">
+                    <button id="addCategoryBtn" class="category-action-btn">추가</button>
+                    <button id="deleteCategoryBtn" class="category-action-btn">삭제</button>
+                </div>
+            </div>
+
+            <!-- 개발자 버튼 추가 -->
+            <div class="devBtn-wrapper">
+                <button id="devModeBtn" class="dev-mode-btn">&lt;/&gt;</button>
+            </div>
         </div>
 
-        <!-- 카테고리, 추가, 삭제 버튼 -->
-        <div class="category-wrapper">
-            <button id="categoryBtn" class="category-btn">카테고리</button>
-            <div id="categoryActions" class="category-actions">
-                <button id="addCategoryBtn" class="category-action-btn">추가</button>
-                <button id="deleteCategoryBtn" class="category-action-btn">삭제</button>
+        <!-- 개발자 모드 모달 창 -->
+        <div id="devModal" class="dev-modal">
+            <div class="dev-modal-content">
+                <h2>개발자 모드</h2>
+                <p>별 만들기 제한 X , 날짜 표시 , 단축키 (별 5개 생성(9), 별 전부 생성(0))</p>
             </div>
         </div>
         
