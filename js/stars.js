@@ -624,27 +624,47 @@ function addStarsForMoon(starCount) {
     }
 }
 
-//  ============================== 테스트용 코드 ==============================
-// ============================================================================
-document.addEventListener('keydown', function(event) { 
-    if (event.key === '8') {
-        addStars(1000);  
+function addConstellations() {
+    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const skyWidth = sky.offsetWidth;
+    const skyHeight = sky.offsetHeight;
+
+    for (var i = constellationIndex; i < 137; i++) {
+
+        // ⭐ 큰 별 1개 추가 (5개를 채웠을 때)
+        const bigStar = document.createElement('div');
+        bigStar.classList.add('big-star');
+        bigStar.style.position = 'absolute';
+
+        // 처음엔 가운데 위치
+        bigStar.style.left = `${skyWidth / 2 - 10}px`;
+        bigStar.style.top = `${skyHeight / 2 - 10}px`;
+
+        // 큰 별 스타일
+        bigStar.style.width = '8px'; // 더 큼
+        bigStar.style.height = '8px';
+        bigStar.style.backgroundColor = 'white';
+        bigStar.style.borderRadius = '50%';
+
+        // ✨ 밝은 효과를 위한 box-shadow 추가
+        bigStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)'; // 흰색 발광 효과
+
+        // 부드러운 이동을 위한 transition
+        bigStar.style.transition = 'left 1s ease-out, top 1s ease-out';
+
+        // 밤하늘에 추가
+        sky.appendChild(bigStar);
+
+        const position = constellations[constellationIndex++];
+
+        // 별을 해당 좌표로 이동
+        const newX = position.x * skyWidth;
+        const newY = position.y * skyHeight;
+
+        bigStar.style.left = `${newX}px`;
+        bigStar.style.top = `${newY}px`;
     }
-    if (event.key === '9') {
-        for (var i = 0; i < constellations.length - 1; i++) {
-            addStars(5); 
-        } 
-        setTimeout(drawLinesBetweenStars, 1000);
-    }9
-    if (event.key === '0') {
-        addStars(10);  
-    }
-});
-window.addEventListener('load', () => {
-    for (var i = 0; i < constellations.length - 1; i++) {
-        //addStars(5); 
-    } 
-    //setTimeout(drawLinesBetweenStars, 1000);
-});
-// ============================================================================
-// ============================================================================
+    addStars(800);
+    drawLinesBetweenStars()
+    createMoon();
+}

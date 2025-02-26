@@ -68,6 +68,7 @@
 
 /* 날짜 표시 스타일 */
 .date-display {
+    display: none;
     font-family: "Poppins", serif;
     position: absolute; /* 화면의 고정된 위치에 배치 */
     bottom: 40px; /* 아래쪽 모서리에서 10px 떨어지게 */

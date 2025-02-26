@@ -1,10 +1,14 @@
 const collectStarsBtn = document.getElementById('collectStarsBtn');
 const closeBtn = document.querySelector('.close-btn'); 
 const categoryContainer = document.getElementById('categoryContainer');
+const timeLeftElement = document.querySelector('.time-left');
 
 let zIndexCounter = 2000;
 let isDeleteMode = false; // 삭제 모드 상태
 let canCreateStar = 1;  // 별을 만들 수 있는지 여부를 나타내는 변수 (1: 가능, 0: 불가능)
+let onlyCreateStar = 0;
+let isCooldown = false; // 쿨타임 여부를 체크하는 변수
+let isZeroPressed = false; // 0번 키 눌렀는지 체크하는 변수
 
 // 별 모으기 버튼 클릭 시 투두리스트 표시
 collectStarsBtn.addEventListener('click', () => {
@@ -47,16 +51,31 @@ window.addEventListener('load', () => {
     const currentDate = new Date();
     const formattedDate = getFormattedDate(currentDate);
     
-    // 날짜 표시 영역이 없으면 생성
-    let dateDisplay = document.querySelector('.date-display');
-    if (!dateDisplay) {
-        dateDisplay = document.createElement('div');
-        dateDisplay.classList.add('date-display');
-        document.body.appendChild(dateDisplay);
+    // 이미 존재하는 .date-display 요소에 날짜 표시
+    const dateDisplay = document.querySelector('.date-display');
+    if (dateDisplay) {
+        dateDisplay.textContent = formattedDate;
+    }
+});
+
+// 날짜를 하루 증가시키는 함수
+function moveToNextDay() {
+    // 날짜가 아직 설정되지 않았으면, 오늘 날짜로 초기화
+    if (!window.currentDate) {
+        window.currentDate = new Date();  // 초기 날짜 설정
     }
 
-    dateDisplay.textContent = formattedDate;
-});
+    // 하루 증가
+    window.currentDate.setDate(window.currentDate.getDate() + 1);
+
+    const formattedDate = getFormattedDate(window.currentDate);
+    
+    // .date-display 요소에 날짜 표시
+    const dateDisplay = document.querySelector('.date-display');
+    if (dateDisplay) {
+        dateDisplay.textContent = formattedDate;
+    }
+}
 
 document.getElementById('categoryBtn').addEventListener('click', () => {
     const categoryBtn = document.getElementById('categoryBtn');
@@ -239,7 +258,7 @@ function positionNewCategoryBlock(newBlock, container) {
     const blocks = document.querySelectorAll('.category-block');
     const containerRect = container.getBoundingClientRect();
     const blockSize = 80; // 블록 크기 (조절 가능)
-    
+
     let x, y;
     let isOverlapping;
     let attempts = 0;
@@ -495,7 +514,8 @@ document.querySelector('.create-star-btn').addEventListener('click', function() 
         });
 
         updateStarButtonBorder();
-        canCreateStar = 0;
+        if (onlyCreateStar === 0) canCreateStar = 0;
+        moveToNextDay();
 
         // 1초 기다린 후, addStars 실행
         setTimeout(() => {
@@ -551,9 +571,6 @@ function updateStarButtonBorder() {
 }
 updateStarButtonBorder();
 
-// 남은 시간 표시할 요소
-const timeLeftElement = document.querySelector('.time-left');
-
 // 5시까지 남은 시간을 계산하고 표시하는 함수
 function updateTimeLeft() {
     // 현재 시간
@@ -596,16 +613,12 @@ function updateTimeLeft() {
         createStarBtn.classList.remove('disabledTime');
         timeLeftElement.style.display = 'none';
     }
-
 }
-
 // 매초마다 남은 시간 업데이트
 setInterval(updateTimeLeft, 1000);
 
 // 처음 로드 시에도 즉시 남은 시간 표시
 updateTimeLeft();
-
-
 
 // 개발자 모드 버튼과 모달 요소
 const devModeBtn = document.getElementById("devModeBtn");
@@ -623,4 +636,64 @@ window.onclick = function(event) {
         devModal.style.display = "none"; // 모달 숨기기
     }
 }
+
+// 개발자 모드 스위치 
+document.addEventListener("DOMContentLoaded", () => {
+    const starLimitToggle = document.getElementById("starLimitToggle");
+    const dateToggle = document.getElementById("dateToggle");
+    const shortcutToggle = document.getElementById("shortcutToggle");
+    const dateDisplay = document.querySelector('.date-display');
+
+     // 단축키 기능
+     document.addEventListener("keydown", (event) => {
+        if (!shortcutToggle.checked) return;
+    
+        // 쿨타임 중이면 함수 종료
+        if (!isCooldown) {
+            switch (event.key) {
+                case "8":
+                    addStars(10);
+                    break;
+                case "9":
+                    addStars(100);
+                    break;
+                case "0":
+                    if (isZeroPressed) {
+                        // 이미 0번 키가 눌렸다면 아무 동작도 하지 않음
+                        return;
+                    }
+                    addConstellations();
+                    isZeroPressed = true; // 0번 키 눌렸음을 기록
+                    break;
+            }
+            // 쿨타임 시작
+            isCooldown = true;
+        
+            // 쿨타임이 끝나면 다시 활성화
+            setTimeout(() => {
+                isCooldown = false;
+            }, 2000);
+        }
+    });
+    
+    // 별 만들기 제한 해제 기능
+    starLimitToggle.addEventListener("change", () => {
+        if (starLimitToggle.checked) {
+            onlyCreateStar = 1;
+            canCreateStar = 1;
+            updateStarButtonBorder();
+        } else {
+            onlyCreateStar = 0;
+        }
+    });
+
+    // 날짜 표시 기능
+    dateToggle.addEventListener("change", () => {
+        if (dateToggle.checked) {
+            dateDisplay.style.display = "block";
+        } else {
+            dateDisplay.style.display = "none";
+        }
+    });
+});
 
