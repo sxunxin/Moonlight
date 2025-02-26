@@ -4,6 +4,7 @@ const categoryContainer = document.getElementById('categoryContainer');
 
 let zIndexCounter = 2000;
 let isDeleteMode = false; // 삭제 모드 상태
+let canCreateStar = 1;  // 별을 만들 수 있는지 여부를 나타내는 변수 (1: 가능, 0: 불가능)
 
 // 별 모으기 버튼 클릭 시 투두리스트 표시
 collectStarsBtn.addEventListener('click', () => {
@@ -457,6 +458,11 @@ function addTodoToCategory(categoryBlock) {
 
 // 별 만들기 
 document.querySelector('.create-star-btn').addEventListener('click', function() {
+
+    if (canCreateStar === 0) {
+        return; // 자격이 없으면 함수 종료
+    }
+
     // 체크된 투두 항목들을 선택
     const checkedTodos = document.querySelectorAll('.todo-item input[type="checkbox"]:checked');
     const cnt = checkedTodos.length;  // 체크된 항목의 개수
@@ -489,6 +495,7 @@ document.querySelector('.create-star-btn').addEventListener('click', function() 
         });
 
         updateStarButtonBorder();
+        canCreateStar = 0;
 
         // 1초 기다린 후, addStars 실행
         setTimeout(() => {
@@ -518,7 +525,7 @@ function updateStarButtonBorder() {
     const createStarBtn = document.querySelector('.create-star-btn');
     
     // 5개 이상 체크된 항목이 있으면 버튼 스타일을 업데이트
-    if (checkedTodos.length >= 5) {
+    if (checkedTodos.length >= 5 && canCreateStar === 1) {
         if (starBtnWrapper) {
             starBtnWrapper.style.borderColor = 'rgba(255, 255, 255, 0.6)';
             starBtnWrapper.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.6), 0 0 15px rgba(255, 255, 255, 0.4)';
@@ -544,6 +551,63 @@ function updateStarButtonBorder() {
 }
 updateStarButtonBorder();
 
+// 남은 시간 표시할 요소
+const timeLeftElement = document.querySelector('.time-left');
+
+// 5시까지 남은 시간을 계산하고 표시하는 함수
+function updateTimeLeft() {
+    // 현재 시간
+    const currentTime = new Date();
+
+    // 5시로 설정 (다음날 5시로 계산)
+    const targetTime = new Date();
+    
+    // 현재 시간이 5시 이후라면, targetTime을 내일 5시로 설정
+    if (currentTime.getHours() >= 5) {
+        targetTime.setDate(targetTime.getDate() + 1); // 날짜를 하루 더함
+    }
+
+    targetTime.setHours(5, 0, 0, 0); // 5시로 설정
+
+    // 남은 시간 계산
+    const remainingTime = targetTime - currentTime; // 밀리초 단위로 남은 시간
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60)); // 남은 시간(시간)
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)); // 남은 분
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000); // 남은 초
+
+    // 두 자릿수로 포맷팅 (예: 5 -> 05)
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    // 남은 시간 표시
+    timeLeftElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+        canCreateStar = 1;
+        updateStarButtonBorder();
+    }
+
+    // 별 만들기 버튼 비활성화 효과
+    const createStarBtn = document.querySelector('.create-star-btn');
+    if (canCreateStar === 0) {
+        createStarBtn.classList.add('disabledTime');
+        timeLeftElement.style.display = 'block';
+    } else {
+        createStarBtn.classList.remove('disabledTime');
+        timeLeftElement.style.display = 'none';
+    }
+
+}
+
+// 매초마다 남은 시간 업데이트
+setInterval(updateTimeLeft, 1000);
+
+// 처음 로드 시에도 즉시 남은 시간 표시
+updateTimeLeft();
+
+
+
 // 개발자 모드 버튼과 모달 요소
 const devModeBtn = document.getElementById("devModeBtn");
 const devModal = document.getElementById("devModal");
@@ -560,3 +624,4 @@ window.onclick = function(event) {
         devModal.style.display = "none"; // 모달 숨기기
     }
 }
+

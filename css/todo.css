@@ -11,6 +11,7 @@
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 30px;
+    user-select: none;
 }
 .todo-list.show {
     display: block;
@@ -352,6 +353,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
+/* 별 만들기 버튼 */
 .create-star-btn {
     color: rgba(255, 255, 255, 0.5);
     font-size: 16px;
@@ -361,17 +363,17 @@
     border: none;
     z-index: 22000;
 }
-
 .create-star-btn:hover {
     color: rgba(255, 255, 255, 0.7);
 }
 .create-star-btn:active {
     color: rgba(255, 255, 255, 0.4);
 }
-
-/* 체크된 항목이 없을 때 */
 .create-star-btn.disabled {
-    color: rgba(160, 160, 160, 0.4); /* 글씨색을 더 연하게 변경 */
+    color: rgba(160, 160, 160, 0.4); 
+}
+.create-star-btn.disabledTime {
+    color: rgba(255, 255, 255, 0.17); 
 }
 
 /* 체크박스를 원형으로 만들기 */
@@ -482,5 +484,22 @@ input[type="checkbox"]:hover {
 /* 모달 콘텐츠 안의 h2 태그 스타일 */
 .dev-modal-content h2 {
     font-weight: 350;
+}
+
+/* 남은 시간 표시 */
+.time-left {
+    display: none;
+    position: absolute; /* 화면의 고정된 위치 */
+    right: -251px;
+    top: -45px;
+    width: 100%; 
+    transform: translateX(-50%); /* 정확히 가운데로 정렬 */
+    color: rgba(255, 255, 255, 0.393); /* 글씨 색상 */
+    padding: 50px 100px; /* 여백 */
+    font-size: 19px; /* 글씨 크기 */
+    text-align: center;
+    z-index: 50000; /* 다른 요소들 위에 표시 */
+    font-family: "Poppins", serif;
+    font-weight: 200;
 }
 
