@@ -450,6 +450,23 @@ input[type="checkbox"]:hover {
     color: rgba(255, 255, 255, 0.4);
 }
 
+/* 남은 시간 표시 */
+.time-left {
+    display: none;
+    position: absolute; /* 화면의 고정된 위치 */
+    right: -251px;
+    top: -45px;
+    width: 100%; 
+    transform: translateX(-50%); /* 정확히 가운데로 정렬 */
+    color: rgba(255, 255, 255, 0.393); /* 글씨 색상 */
+    padding: 50px 100px; /* 여백 */
+    font-size: 19px; /* 글씨 크기 */
+    text-align: center;
+    z-index: 50000; /* 다른 요소들 위에 표시 */
+    font-family: "Poppins", serif;
+    font-weight: 200;
+}
+
 /* 모달 배경 스타일 */
 .dev-modal {
     display: none; /* 처음에는 모달이 보이지 않음 */
@@ -472,34 +489,121 @@ input[type="checkbox"]:hover {
     padding: 10px 30px;
     border-radius: 15px; /* 기존 버튼 스타일에 맞게 둥글게 설정 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    color: rgba(255, 255, 255, 0.7);; /* 텍스트 색상을 흰색으로 설정 */
+    color: rgba(255, 255, 255, 0.7); /* 텍스트 색상을 흰색으로 설정 */
     pointer-events: auto; /* 내용 클릭은 가능하도록 설정 */
     width: 400px;
-    height: 600px;
+    height: 541px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.36); /* 버튼들과 동일한 보더 */
     font-weight: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    justify-content: flex-start; /* 위쪽 정렬 */
 }
 
-/* 모달 콘텐츠 안의 h2 태그 스타일 */
+/* 모달 제목 */
 .dev-modal-content h2 {
     font-weight: 350;
-}
-
-/* 남은 시간 표시 */
-.time-left {
-    display: none;
-    position: absolute; /* 화면의 고정된 위치 */
-    right: -251px;
-    top: -45px;
-    width: 100%; 
-    transform: translateX(-50%); /* 정확히 가운데로 정렬 */
-    color: rgba(255, 255, 255, 0.393); /* 글씨 색상 */
-    padding: 50px 100px; /* 여백 */
-    font-size: 19px; /* 글씨 크기 */
+    margin-top: 20px; /* 제목을 위로 이동 */
+    margin-bottom: 10px;
+    color: #fff;
     text-align: center;
-    z-index: 50000; /* 다른 요소들 위에 표시 */
-    font-family: "Poppins", serif;
-    font-weight: 200;
 }
 
+.devModal-description {
+    font-size: 15px;
+    color: #b4b4b4;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+/* 각 기능의 토글 */
+.feature-toggle {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 추가 */
+    border-radius: 10px;
+    background-color: transparent; /* 배경색 제거 */
+}
+
+/* 제목과 토글을 한 줄에 배치 */
+.feature-toggle-header {
+    display: flex;
+    justify-content: space-between; /* 제목과 스위치를 양쪽 정렬 */
+    align-items: center; /* 수직 정렬 */
+    width: 100%;
+}
+
+/* 토글 제목 */
+.feature-toggle label {
+    font-size: 16px;
+    font-weight: normal;
+    color: #fff;
+    margin-left: 10px; /* 왼쪽 여백 */
+    white-space: nowrap; /* 줄 바꿈 방지 */
+}
+
+/* 설명 텍스트 (다음 줄) */
+.feature-description {
+    font-size: 15px;
+    color: #8f8f8f;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 24px;
+    text-align: left;
+}
+
+/* 토글 스위치 컨테이너 */
+.toggle-container {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    align-items: center;
+    width: auto; /* 내용 크기에 맞춤 */
+}
+
+/* 토글 스위치 디자인 */
+input[type="checkbox"].toggle-feature {
+    width: 40px;  /* 크기를 조절 */
+    height: 20px;  /* 크기를 조절 */
+    background-color: rgba(255, 255, 255, 0.3); /* 기본 배경색 */
+    border-radius: 15px;  /* 라운드 처리 */
+    position: relative;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.317);
+}
+
+/* 체크된 상태의 토글 배경 */
+input[type="checkbox"].toggle-feature:checked {
+    background-color: #4CAF50;  /* 초록색으로 변화 */
+    justify-content: flex-end;  /* 오른쪽으로 원 이동 */
+}
+
+/* 체크된 상태에서 원 */
+input[type="checkbox"].toggle-feature:checked::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 22px;  /* 오른쪽으로 이동 */
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%; /* 원형 */
+    transition: 0.3s;
+}
+
+/* 기본 상태에서 원 */
+input[type="checkbox"].toggle-feature::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;  /* 왼쪽으로 원 초기 위치 설정 */
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}

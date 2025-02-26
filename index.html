@@ -57,10 +57,55 @@
         <div id="devModal" class="dev-modal">
             <div class="dev-modal-content">
                 <h2>개발자 모드</h2>
-                <p>별 만들기 제한 X , 날짜 표시 , 단축키 (별 5개 생성(9), 별 전부 생성(0))</p>
+                <p class="devModal-description">
+                    이 모드는 사이트의 기능을 테스트하고 활성화/비활성화할 수 있는 옵션을 제공합니다.
+                    아래 기능을 켜서 원하는 설정을 적용해 보세요.
+                </p>
+
+                <!-- 별 만들기 제한 토글 -->
+                <div class="feature-toggle">
+                    <div class="feature-toggle-header">
+                        <label for="starLimitToggle">별 만들기 제한 해제</label>
+                        <div class="toggle-container">
+                            <input type="checkbox" id="starLimitToggle" class="toggle-feature">
+                        </div>
+                    </div>
+                    <p class="feature-description">
+                        하루에 한 번만 사용할 수 있는 별 만들기 제한을 해제합니다.
+                    </p>
+                </div>
+
+                <!-- 날짜 표시 토글 -->
+                <div class="feature-toggle">
+                    <div class="feature-toggle-header">
+                        <label for="dateToggle">날짜 표시</label>
+                        <div class="toggle-container">
+                            <input type="checkbox" id="dateToggle" class="toggle-feature">
+                        </div>
+                    </div>
+                    <p class="feature-description">
+                        현재 날짜를 화면에 표시합니다.<br>별을 생성할 때마다 하루가 지나갑니다.
+                    </p>
+                </div>
+
+                <!-- 단축키 토글 -->
+                <div class="feature-toggle">
+                    <div class="feature-toggle-header">
+                        <label for="shortcutToggle">별 생성 단축키</label>
+                        <div class="toggle-container">
+                            <input type="checkbox" id="shortcutToggle" class="toggle-feature">
+                        </div>
+                    </div>
+                    <p class="feature-description">
+                        단축키를 사용해 빠르게 별을 생성할 수 있습니다.<br>
+                        - 8번 키: 별 10개 생성<br>
+                        - 9번 키: 별 100개 생성<br>
+                        - 0번 키: 모든 별자리 완성
+                    </p>
+                </div>
             </div>
         </div>
-        
+
         <!-- 날짜 표시 -->
         <div class="date-display"></div>
       

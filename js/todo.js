@@ -566,7 +566,6 @@ function updateTimeLeft() {
     if (currentTime.getHours() >= 5) {
         targetTime.setDate(targetTime.getDate() + 1); // 날짜를 하루 더함
     }
-
     targetTime.setHours(5, 0, 0, 0); // 5시로 설정
 
     // 남은 시간 계산
