@@ -293,6 +293,7 @@ function addTodoToCategory(categoryBlock) {
             isDeleteMode = false;
             updateAddTodoButtons();
             categoryBlock.remove(); 
+            updateStarButtonBorder();
         }
     }
 
@@ -433,6 +434,7 @@ function addTodoToCategory(categoryBlock) {
         todoAbout.style.display = 'inline'; 
         todoItem.classList.remove('show-menu');
         todoItem.remove();
+        updateStarButtonBorder();
     });
 
     // 수정 버튼 기능
