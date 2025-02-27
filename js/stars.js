@@ -3,6 +3,10 @@ let nowStar = 0;
 let resizeTimeout; // 창 크기 변경 딜레이
 let moonMake = 0;
 
+const completionIndexes = [10, 22, 26, 37, 53, 60, 69, 82, 90, 105, 126, 136]; // 완성 인덱스 리스트
+let constellationsCnt = 0;
+let prevCompletionIndex = -1; // 직전 완성 인덱스 추적
+
 // 별자리 보정값
 let AquariusX = -0.03, AquariusY = -0.1;  
 let PiscesX = 0.035, PiscesY = -0.22;
@@ -222,8 +226,8 @@ function addStars(starCount) {
         bigStar.style.top = `${skyHeight / 2 - 10}px`;
 
         // 큰 별 스타일
-        bigStar.style.width = '8px'; // 더 큼
-        bigStar.style.height = '8px';
+        bigStar.style.width = '6px'; // 더 큼
+        bigStar.style.height = '6px';
         bigStar.style.backgroundColor = 'white';
         bigStar.style.borderRadius = '50%';
 
@@ -250,6 +254,15 @@ function addStars(starCount) {
             setTimeout(drawOneLineBetweenStars, 1000);
 
         }, 500);
+
+         // 현재 별자리가 특정 완성 인덱스에 도달했다면 반짝이게 만들기
+         if (completionIndexes.includes(constellationIndex)) {
+            const startIndex = prevCompletionIndex + 1; // 이전 완료 인덱스 다음부터 시작
+            const endIndex = constellationIndex; // 현재 인덱스까지 반짝이기
+
+            prevCompletionIndex = constellationIndex; // 현재 인덱스를 이전 인덱스로 업데이트
+            setTimeout(() => glowStarsInRange(startIndex, endIndex), 2200);
+        }
 
         // 작은 별 개수는 (starCount - 1)
         starCount -= 1;
@@ -420,6 +433,12 @@ function drawLinesBetweenStars() {
     const stars = document.querySelectorAll('.big-star');
     const connections = [];  // 새로 연결할 별들 저장
 
+    // 기존 선 삭제
+    const lines = document.querySelectorAll('.constellation-line');
+    lines.forEach(line => {
+        line.remove();
+    });
+
     // 모든 별들에 대해 연결을 처리
     for (let i = 0; i < stars.length; i++) {
         const newConnections = getConnectionsForNewStar(i); // 연결할 별들을 가져옴
@@ -524,12 +543,21 @@ function createMoon() {
             }
         }, index * 400); // 0.4초 간격으로 생성
     });
+
+    setTimeout(showLight, 7000);
+}
+
+function showLight() {
+    const light = document.querySelector('.center-light');
+    light.style.opacity = '1'; // 빛을 보이게 설정
 }
 
 
 function drawLinesBetweenMoonStars() {
     const sky = document.querySelector('.sky');
     const moonStars = document.querySelectorAll('.moon-star');
+    const moonLines = document.querySelectorAll('.moon-constellation-line');
+    moonLines.forEach(line => line.remove());
 
     // 각 문스타를 연결할 선을 그리기
     for (let i = 0; i < moonStars.length; i++) {
@@ -625,6 +653,8 @@ function addStarsForMoon(starCount) {
 }
 
 function addConstellations() {
+    if (constellationIndex > 136) return;
+
     const sky = document.querySelector('.sky'); // 밤하늘 영역
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
@@ -664,7 +694,110 @@ function addConstellations() {
         bigStar.style.left = `${newX}px`;
         bigStar.style.top = `${newY}px`;
     }
+    // 기존 선 삭제
+    const lines = document.querySelectorAll('.constellation-line');
+    lines.forEach(line => {
+        line.remove();
+    });
+    
+
     addStars(800);
-    drawLinesBetweenStars()
-    createMoon();
+    drawLinesBetweenStars();
+    animateStarsSequentially();
+    setTimeout(createMoon, 2000);
+
 }
+
+function glowStarsInRange(startIndex, endIndex) {
+    const stars = document.querySelectorAll('.big-star');
+
+    stars.forEach((star, index) => {
+        if (index >= startIndex && index <= endIndex) {
+            setTimeout(() => {
+                star.style.animation = "glow 0.6s ease-in-out";
+
+                // 모든 별이 다 반짝인 후, 점차적으로 커지는 효과 적용
+                if (index === endIndex) {
+                    setTimeout(() => {
+                        for (let i = startIndex; i <= endIndex; i++) {
+                            stars[i].style.animation = "glow-all 1.5s forwards";  // 'forwards'로 애니메이션이 끝난 후에도 그 상태 유지
+                        }
+                    }, 600);
+                } else {
+                    setTimeout(() => star.style.animation = "", 600);
+                }
+            }, (index - startIndex) * 200); // 순차적 반짝임 딜레이 (0.1초 간격)
+        }
+    });
+
+    showConstellationName(constellationsCnt++);
+}
+
+function animateStarsSequentially() {
+    const stars = document.querySelectorAll('.big-star'); // 모든 큰 별 선택
+    constellationIndex = 0;
+    // 각 별에 순차적으로 grow-all 애니메이션을 적용
+    stars.forEach((star, index) => {
+        setTimeout(() => {
+            star.style.animation = "glow-all 1.5s forwards 1"; // glow-all 애니메이션 한 번 실행
+            showConstellationName(constellationIndex++);
+        }, index * 60); // 0.1초씩 딜레이
+    });
+}
+
+// 별자리가 완성되었을 때 호출되는 함수
+function showConstellationName(constellationIndex) {
+    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const skyWidth = sky.offsetWidth;
+    const skyHeight = sky.offsetHeight;
+
+    // 별자리 이름들 배열
+    const constellationNames = [
+        'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 
+        'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'
+    ];
+
+    // 각 별자리의 수동 좌표 설정 (x, y)
+    const customCoordinates = [
+        { x: 0.09, y: 0.23 },   // Aquarius
+        { x: 0.55, y: 0.17 },  // Pisces
+        { x: 0.2, y: 0.88 },   // Aries
+        { x: 0.842, y: 0.57 },   // Taurus
+        { x: 0.12, y: 0.64 },   // Gemini
+        { x: 0.68, y: 0.53 },   // Cancer
+        { x: 0.32, y: 0.1 },  // Leo
+        { x: 0.51, y: 0.85 },    // Virgo
+        { x: 0.31, y: 0.69 },   // Libra
+        { x: 0.233, y: 0.35 },    // Scorpio
+        { x: 0.83, y: 0.35 },   // Sagittarius
+        { x: 0.733, y: 0.85 }     // Capricorn
+    ];
+    
+    // 별자리 이름을 표시할 div 생성
+    const nameDiv = document.createElement('div');
+    nameDiv.classList.add('constellation-name');
+    nameDiv.textContent = constellationNames[constellationIndex];
+
+    // 수동으로 지정한 좌표로 계산된 위치
+    const position = customCoordinates[constellationIndex]; // 수동 좌표 가져오기
+    const newX = position.x * skyWidth;
+    const newY = position.y * skyHeight;
+
+    // 이름을 해당 좌표에 위치
+    nameDiv.style.left = `${newX}px`;
+    nameDiv.style.top = `${newY}px`;
+
+    // 이름을 화면에 추가
+    sky.appendChild(nameDiv);
+
+    setTimeout(() => {
+        nameDiv.style.opacity = '1';
+    }, 100); // 잠깐 딜레이 후 효과 시작
+
+    setTimeout(() => {
+        nameDiv.style.opacity = '0';
+    }, 5000); // 잠깐 딜레이 후 효과 시작
+}
+
+// 테스트용 코드 
+// addConstellations();

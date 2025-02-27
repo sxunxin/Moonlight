@@ -18,6 +18,7 @@ body, html {
     z-index: -2;
 }
 
+
 /* 땅 배경 (이미지 사용) */
 .ground {
     position: relative;
@@ -49,4 +50,54 @@ body, html {
     background-color: white;
     border-radius: 50%;
     animation: twinkle 2s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 15px 6px rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+    }
+    100% {
+        box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.6);
+        transform: scale(1);
+    }
+}
+
+@keyframes glow-all {
+    100% { 
+        transform: scale(1.24); 
+        box-shadow: 0 0 50px 10px rgba(255, 255, 255, 0.3); /* 커진 상태에서 밝기 증가 */
+    }
+}
+
+.center-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 230px; /* 빛의 크기 */
+    height: 230px; /* 빛의 크기 */
+    background-color: rgba(255, 255, 255, 0.2); /* 흰색으로 부드러운 빛 효과 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    box-shadow: 0 0 150px 60px rgba(255, 255, 255, 0.2); /* 빛이 퍼지는 효과 */
+    transform: translate(-50%, -50%); /* 중앙 정렬 */
+    opacity: 0; /* 처음에는 보이지 않게 설정 */
+    transition: opacity 1s ease-in-out; /* 부드럽게 보이도록 전환 효과 추가 */
+}
+
+.constellation-name {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.52);
+    padding: 5px 10px;
+    font-size: 23px;
+    font-weight: 100;
+    opacity: 0; /* 처음에는 보이지 않음 */
+    transition: opacity 1s ease-in-out; /* 부드럽게 나타나게 하는 효과 */
+    user-select: none; 
+    /* 텍스트 그림자 추가 */
+    text-shadow: 4px 4px 20px rgba(255, 255, 255, 0.7), 
+                 -4px -4px 20px rgba(255, 255, 255, 0.7);
 }
