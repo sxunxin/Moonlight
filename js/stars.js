@@ -1,11 +1,9 @@
 let constellationIndex = 0; 
 let nowStar = 0;
-let resizeTimeout; // 창 크기 변경 딜레이
+let resizeTimeout; 
 let moonMake = 0;
-
-const completionIndexes = [10, 22, 26, 37, 53, 60, 69, 82, 90, 105, 126, 136]; // 완성 인덱스 리스트
 let constellationsCnt = 0;
-let prevCompletionIndex = -1; // 직전 완성 인덱스 추적
+let prevCompletionIndex = -1;
 
 // 별자리 보정값
 let AquariusX = -0.03, AquariusY = -0.1;  
@@ -20,6 +18,8 @@ let LibraX = -0.02, LibraY = 0.14;
 let ScorpioX = 0.02, ScorpioY = 0.03;
 let SagittariusX = -0.02, SagittariusY = -0.2;
 let CapricornX = 0.15, CapricornY = 0.11;
+
+const completionIndexes = [10, 22, 26, 37, 53, 60, 69, 82, 90, 105, 126, 136]; 
 
 const constellations = [
     // 물병자리 Aquarius (11개, 1 - 11)
@@ -211,40 +211,32 @@ function getConnectionsForNewStar(newStarIndex) {
 }
 
 function addStars(starCount) {
-    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const sky = document.querySelector('.sky'); 
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
+    // 큰 별 추가 
     if (starCount >= 5 && constellationIndex < 137) {
-        // ⭐ 큰 별 1개 추가 (5개를 채웠을 때)
         const bigStar = document.createElement('div');
         bigStar.classList.add('big-star');
         bigStar.style.position = 'absolute';
 
-        // 처음엔 가운데 위치
         bigStar.style.left = `${skyWidth / 2 - 10}px`;
         bigStar.style.top = `${skyHeight / 2 - 10}px`;
 
-        // 큰 별 스타일
-        bigStar.style.width = '6px'; // 더 큼
+        bigStar.style.width = '6px'; 
         bigStar.style.height = '6px';
         bigStar.style.backgroundColor = 'white';
         bigStar.style.borderRadius = '50%';
 
-        // ✨ 밝은 효과를 위한 box-shadow 추가
-        bigStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)'; // 흰색 발광 효과
-
-        // 부드러운 이동을 위한 transition
+        bigStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)';
         bigStar.style.transition = 'left 1s ease-out, top 1s ease-out';
 
-        // 밤하늘에 추가
         sky.appendChild(bigStar);
 
-        // 0.5초 후 랜덤 위치로 이동
         setTimeout(() => {
             const position = constellations[constellationIndex++];
 
-            // 별을 해당 좌표로 이동
             const newX = position.x * skyWidth;
             const newY = position.y * skyHeight;
 
@@ -255,16 +247,15 @@ function addStars(starCount) {
 
         }, 500);
 
-         // 현재 별자리가 특정 완성 인덱스에 도달했다면 반짝이게 만들기
-         if (completionIndexes.includes(constellationIndex)) {
-            const startIndex = prevCompletionIndex + 1; // 이전 완료 인덱스 다음부터 시작
-            const endIndex = constellationIndex; // 현재 인덱스까지 반짝이기
 
-            prevCompletionIndex = constellationIndex; // 현재 인덱스를 이전 인덱스로 업데이트
+         if (completionIndexes.includes(constellationIndex)) {
+            const startIndex = prevCompletionIndex + 1; 
+            const endIndex = constellationIndex; 
+
+            prevCompletionIndex = constellationIndex; 
             setTimeout(() => glowStarsInRange(startIndex, endIndex), 2200);
         }
 
-        // 작은 별 개수는 (starCount - 1)
         starCount -= 1;
 
         if (constellationIndex >= 136) {
@@ -272,7 +263,7 @@ function addStars(starCount) {
         }
     }
 
-    // ✨ 작은 별 추가 (남은 개수만큼)
+    // 작은 별 추가 
     for (let i = 0; i < starCount; i++) {
         if (nowStar > 1600) break;
         nowStar++;
@@ -280,24 +271,18 @@ function addStars(starCount) {
         star.classList.add('star');
         star.style.position = 'absolute';
 
-        // 처음엔 가운데 위치
         star.style.left = `${skyWidth / 2 - 10}px`;
         star.style.top = `${skyHeight / 2 - 10}px`;
 
-        // 작은 별 스타일 설정
-        const starSize = Math.random() * 3 + 1; // 2px ~ 5px 크기
+        const starSize = Math.random() * 3 + 1; 
         star.style.width = `${starSize}px`;
         star.style.height = `${starSize}px`;
         star.style.backgroundColor = 'white';
         star.style.borderRadius = '50%';
-
-        // 부드러운 이동을 위한 transition
         star.style.transition = 'left 1s ease-out, top 1s ease-out';
 
-        // 밤하늘에 추가
         sky.appendChild(star);
 
-        // 0.5초 후 랜덤 위치로 이동
         setTimeout(() => {
             const randomX = Math.random() * skyWidth;
             const randomY = Math.random() * skyHeight;
@@ -305,28 +290,26 @@ function addStars(starCount) {
             star.style.left = `${randomX}px`;
             star.style.top = `${randomY}px`;
 
-            // 3초 ~ 10초 랜덤 애니메이션 지속 시간 적용
             const randomDuration = Math.random() * 7 + 3;
             star.style.animationDuration = `${randomDuration}s`;
-
         }, 500);
     }
 }
 
-// 창 크기 변경 시 별들의 위치 업데이트
+// 창 크기 변경 시 위치 업데이트
 window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout); // 이전 타임아웃을 지우고
+    clearTimeout(resizeTimeout); 
     resizeTimeout = setTimeout(() => {
         const sky = document.querySelector('.sky');
         const skyWidth = sky.offsetWidth;
         const skyHeight = sky.offsetHeight;
 
-        const radius = Math.min(skyWidth, skyHeight) * 0.15; // 화면 크기에 따라 반지름 비율 조정
+        const radius = Math.min(skyWidth, skyHeight) * 0.15; 
 
         const MoonStars = document.querySelectorAll('.moon-star');
         
         MoonStars.forEach((MoonStar, index) => {
-            const angleStep = (2 * Math.PI) / 12; // 12각형
+            const angleStep = (2 * Math.PI) / 12; 
             const angle = index * angleStep;
             const centerX = skyWidth / 2;
             const centerY = skyHeight / 2;
@@ -334,12 +317,10 @@ window.addEventListener('resize', () => {
             const x = centerX + radius * Math.cos(angle);
             const y = centerY + radius * Math.sin(angle);
 
-            // 위치 업데이트
-            MoonStar.style.left = `${x - 4.5}px`;  // 별 크기 보정
+            MoonStar.style.left = `${x - 4.5}px`; 
             MoonStar.style.top = `${y - 4.5}px`;
         });
 
-        // 큰 별들의 위치 업데이트
         const bigStars = document.querySelectorAll('.big-star');
         bigStars.forEach((bigStar, index) => {
             const position = constellations[index % constellations.length];
@@ -350,7 +331,6 @@ window.addEventListener('resize', () => {
             bigStar.style.top = `${newY}px`;
         });
 
-        // 작은 별들의 위치 업데이트 (옵션에 따라 필요 시 구현)
         const stars = document.querySelectorAll('.star');
         stars.forEach(star => {
             const randomX = Math.random() * skyWidth;
@@ -360,7 +340,6 @@ window.addEventListener('resize', () => {
             star.style.top = `${randomY}px`;
         });
 
-        // 기존 선 삭제
         const lines = document.querySelectorAll('.constellation-line');
         lines.forEach(line => {
             line.remove();
@@ -372,27 +351,25 @@ window.addEventListener('resize', () => {
         setTimeout(drawLinesBetweenStars, 1000);
         setTimeout(drawLinesBetweenMoonStars, 1000);
 
-    }, 400); // 200ms 후에 한 번만 실행되도록 설정
+    }, 400); 
 });
 
-// 큰 별 생성시 연결
+// 큰 별 연결
 function drawOneLineBetweenStars() {
     const sky = document.querySelector('.sky');
     if (constellationIndex < 2) return;
 
     const stars = document.querySelectorAll('.big-star');
-    const newStarIndex = stars.length - 1; // 마지막 별이 새로 추가된 별
-    const connections = getConnectionsForNewStar(newStarIndex); // 연결할 별들을 가져옴
+    const newStarIndex = stars.length - 1; 
+    const connections = getConnectionsForNewStar(newStarIndex); 
 
-    // 연결된 별들끼리 선을 그림
     connections.forEach(connection => {
-        const startStarIndex = connection[0]; // 연결할 첫 번째 별 인덱스
-        const endStarIndex = connection[1];   // 연결할 두 번째 별 인덱스
+        const startStarIndex = connection[0];
+        const endStarIndex = connection[1];  
 
-        const startStar = stars[startStarIndex - 1]; // 인덱스는 1부터 시작하므로 -1
-        const endStar = stars[endStarIndex - 1];     // 동일
+        const startStar = stars[startStarIndex - 1]; 
+        const endStar = stars[endStarIndex - 1];    
 
-        // 유효한 별이 있을 경우 선을 그리도록
         if (startStar && endStar) {
             const line = document.createElement('div');
             line.classList.add('constellation-line');
@@ -411,15 +388,14 @@ function drawOneLineBetweenStars() {
             const distance = Math.sqrt(dx * dx + dy * dy);
             const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-            line.style.width = `0px`; // 처음엔 0px
+            line.style.width = `0px`;
             line.style.left = `${x1}px`;
             line.style.top = `${y1}px`;
             line.style.transform = `rotate(${angle}deg)`;
-            line.style.transition = 'width 1s ease-out'; // 선이 천천히 그려짐
+            line.style.transition = 'width 1s ease-out'; 
 
             sky.appendChild(line);
 
-            // 0.1초 후 선이 부드럽게 나타나도록 길이 조절
             setTimeout(() => {
                 line.style.width = `${distance}px`;
             }, 100);
@@ -427,33 +403,29 @@ function drawOneLineBetweenStars() {
     });
 }
 
-// 창 크기 변경 시 별들 다시 연결
+// 별들 다시 연결
 function drawLinesBetweenStars() {
     const sky = document.querySelector('.sky');
     const stars = document.querySelectorAll('.big-star');
-    const connections = [];  // 새로 연결할 별들 저장
+    const connections = []; 
 
-    // 기존 선 삭제
     const lines = document.querySelectorAll('.constellation-line');
     lines.forEach(line => {
         line.remove();
     });
 
-    // 모든 별들에 대해 연결을 처리
     for (let i = 0; i < stars.length; i++) {
-        const newConnections = getConnectionsForNewStar(i); // 연결할 별들을 가져옴
-        connections.push(...newConnections);  // 연결 추가
+        const newConnections = getConnectionsForNewStar(i); 
+        connections.push(...newConnections);  
     }
 
-    // 연결된 별들끼리 선을 그림
     connections.forEach(connection => {
-        const startStarIndex = connection[0]; // 연결할 첫 번째 별 인덱스
-        const endStarIndex = connection[1];   // 연결할 두 번째 별 인덱스
+        const startStarIndex = connection[0]; 
+        const endStarIndex = connection[1];   
 
-        const startStar = stars[startStarIndex - 1]; // 0부터 시작하는 인덱스를 사용
-        const endStar = stars[endStarIndex - 1];     // 동일
+        const startStar = stars[startStarIndex - 1]; 
+        const endStar = stars[endStarIndex - 1]; 
 
-        // 유효한 별이 있을 경우 선을 그리도록
         if (startStar && endStar) {
             const line = document.createElement('div');
             line.classList.add('constellation-line');
@@ -472,15 +444,14 @@ function drawLinesBetweenStars() {
             const distance = Math.sqrt(dx * dx + dy * dy);
             const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-            line.style.width = `0px`; // 처음엔 0px
+            line.style.width = `0px`; 
             line.style.left = `${x1}px`;
             line.style.top = `${y1}px`;
             line.style.transform = `rotate(${angle}deg)`;
-            line.style.transition = 'width 1s ease-out'; // 선이 천천히 그려짐
+            line.style.transition = 'width 1s ease-out'; 
 
             sky.appendChild(line);
 
-            // 0.1초 후 선이 부드럽게 나타나도록 길이 조절
             setTimeout(() => {
                 line.style.width = `${distance}px`;
             }, 100);
@@ -488,22 +459,22 @@ function drawLinesBetweenStars() {
     });
 }
 
+// 달 만들기 
 function createMoon() {
     moonMake = 1;
 
-    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const sky = document.querySelector('.sky');
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
     const centerX = skyWidth / 2;
     const centerY = skyHeight / 2;
-    const radius = 120; // 반지름
-    const numPoints = 12; // 12각형 점 개수
-    const angleStep = (2 * Math.PI) / numPoints; // 각도 간격
+    const radius = 120;
+    const numPoints = 12;
+    const angleStep = (2 * Math.PI) / numPoints;
 
     const points = [];
 
-    // 12각형의 12개 꼭짓점 좌표 계산
     for (let i = 0; i < numPoints; i++) {
         const angle = i * angleStep;
         const x = centerX + radius * Math.cos(angle);
@@ -521,14 +492,11 @@ function createMoon() {
             MoonStar.style.backgroundColor = 'white';
             MoonStar.style.borderRadius = '50%';
             MoonStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)';
-            
-            // 초기 위치 (중앙)
             MoonStar.style.left = `${centerX - 4.5}px`;
             MoonStar.style.top = `${centerY - 4.5}px`;
             MoonStar.style.transition = 'left 1s ease-out, top 1s ease-out';
             sky.appendChild(MoonStar);
 
-            // 이동 (0.5초 후 꼭짓점으로 이동)
             setTimeout(() => {
                 MoonStar.style.left = `${point.x - 4.5}px`;
                 MoonStar.style.top = `${point.y - 4.5}px`;
@@ -537,29 +505,28 @@ function createMoon() {
             nowStar -= 10;
             addStars(10); 
 
-            // 모든 별이 생성된 후 선 그리기 실행
             if (index === numPoints - 1) {
                 setTimeout(drawLinesBetweenMoonStars, 2000);
             }
-        }, index * 400); // 0.4초 간격으로 생성
+        }, index * 400);
     });
 
     setTimeout(showLight, 7000);
 }
 
+// 달빛 보이기 
 function showLight() {
     const light = document.querySelector('.center-light');
-    light.style.opacity = '1'; // 빛을 보이게 설정
+    light.style.opacity = '1'; 
 }
 
-
+// 달의 별들 연결
 function drawLinesBetweenMoonStars() {
     const sky = document.querySelector('.sky');
     const moonStars = document.querySelectorAll('.moon-star');
     const moonLines = document.querySelectorAll('.moon-constellation-line');
     moonLines.forEach(line => line.remove());
 
-    // 각 문스타를 연결할 선을 그리기
     for (let i = 0; i < moonStars.length; i++) {
         for (let j = i + 1; j < moonStars.length; j++) {
             const startStar = moonStars[i];
@@ -570,7 +537,6 @@ function drawLinesBetweenMoonStars() {
             const x2 = parseFloat(endStar.style.left) + 4.5;
             const y2 = parseFloat(endStar.style.top) + 4.5;
 
-            // 선 그리기
             const dx = x2 - x1;
             const dy = y2 - y1;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -582,16 +548,15 @@ function drawLinesBetweenMoonStars() {
             line.style.backgroundColor = 'rgba(255, 255, 255, 0.44)';
             line.style.height = '1px';
             line.style.transformOrigin = 'left center';
-            line.style.width = '0px'; // 처음에는 선이 0px
+            line.style.width = '0px'; 
 
             line.style.left = `${x1}px`;
             line.style.top = `${y1}px`;
             line.style.transform = `rotate(${angle}deg)`;
-            line.style.transition = 'width 1s ease-out'; // 선이 부드럽게 나타나도록
+            line.style.transition = 'width 1s ease-out'; 
 
             sky.appendChild(line);
 
-            // 0.1초 후 선이 부드럽게 길이가 증가하도록 처리
             setTimeout(() => {
                 line.style.width = `${distance}px`;
             }, 100);
@@ -604,35 +569,31 @@ function drawLinesBetweenMoonStars() {
     }
 }
 
+// 달의 별들 생성 
 function addStarsForMoon(starCount) {
-    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const sky = document.querySelector('.sky');
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
     const centerX = skyWidth / 2;
     const centerY = skyHeight / 2;
-    const moonRadius = 260; // 달 주변 범위
+    const moonRadius = 260;
 
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
         star.style.position = 'absolute';
 
-        // 처음엔 가운데 위치
         star.style.left = `${skyWidth / 2 - 10}px`;
         star.style.top = `${skyHeight / 2 - 10}px`;
 
-        // 작은 별 스타일 설정
-        const starSize = Math.random() * 3 + 1; // 2px ~ 5px 크기
+        const starSize = Math.random() * 3 + 1;
         star.style.width = `${starSize}px`;
         star.style.height = `${starSize}px`;
         star.style.backgroundColor = 'white';
         star.style.borderRadius = '50%';
-
-        // 부드러운 이동을 위한 transition
         star.style.transition = 'left 1s ease-out, top 1s ease-out';
 
-        // 밤하늘에 추가
         sky.appendChild(star);
 
         setTimeout(() => {
@@ -644,7 +605,6 @@ function addStarsForMoon(starCount) {
             star.style.left = `${x}px`;
             star.style.top = `${y}px`;
 
-            // 3초 ~ 10초 랜덤 애니메이션 지속 시간 적용
             const randomDuration = Math.random() * 7 + 3;
             star.style.animationDuration = `${randomDuration}s`;
 
@@ -652,62 +612,64 @@ function addStarsForMoon(starCount) {
     }
 }
 
+// 별자리 전부 완성 
 function addConstellations() {
     if (constellationIndex > 136) return;
 
-    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const sky = document.querySelector('.sky');
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
     for (var i = constellationIndex; i < 137; i++) {
 
-        // ⭐ 큰 별 1개 추가 (5개를 채웠을 때)
         const bigStar = document.createElement('div');
         bigStar.classList.add('big-star');
         bigStar.style.position = 'absolute';
-
-        // 처음엔 가운데 위치
         bigStar.style.left = `${skyWidth / 2 - 10}px`;
         bigStar.style.top = `${skyHeight / 2 - 10}px`;
-
-        // 큰 별 스타일
-        bigStar.style.width = '6px'; // 더 큼
+        bigStar.style.width = '6px'; 
         bigStar.style.height = '6px';
         bigStar.style.backgroundColor = 'white';
         bigStar.style.borderRadius = '50%';
 
-        // ✨ 밝은 효과를 위한 box-shadow 추가
-        bigStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)'; // 흰색 발광 효과
-
-        // 부드러운 이동을 위한 transition
+        bigStar.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)'; 
         bigStar.style.transition = 'left 1s ease-out, top 1s ease-out';
 
-        // 밤하늘에 추가
         sky.appendChild(bigStar);
 
         const position = constellations[constellationIndex++];
 
-        // 별을 해당 좌표로 이동
         const newX = position.x * skyWidth;
         const newY = position.y * skyHeight;
 
         bigStar.style.left = `${newX}px`;
         bigStar.style.top = `${newY}px`;
     }
-    // 기존 선 삭제
+
     const lines = document.querySelectorAll('.constellation-line');
     lines.forEach(line => {
         line.remove();
     });
     
-
     addStars(800);
     drawLinesBetweenStars();
     animateStarsSequentially();
     setTimeout(createMoon, 2000);
-
 }
 
+function animateStarsSequentially() {
+    const stars = document.querySelectorAll('.big-star'); 
+    constellationIndex = 0;
+
+    stars.forEach((star, index) => {
+        setTimeout(() => {
+            star.style.animation = "glow-all 1.5s forwards 1"; 
+            showConstellationName(constellationIndex++);
+        }, index * 60); 
+    });
+}
+
+// 별자리 빛나기 
 function glowStarsInRange(startIndex, endIndex) {
     const stars = document.querySelectorAll('.big-star');
 
@@ -716,48 +678,32 @@ function glowStarsInRange(startIndex, endIndex) {
             setTimeout(() => {
                 star.style.animation = "glow 0.6s ease-in-out";
 
-                // 모든 별이 다 반짝인 후, 점차적으로 커지는 효과 적용
                 if (index === endIndex) {
                     setTimeout(() => {
                         for (let i = startIndex; i <= endIndex; i++) {
-                            stars[i].style.animation = "glow-all 1.5s forwards";  // 'forwards'로 애니메이션이 끝난 후에도 그 상태 유지
+                            stars[i].style.animation = "glow-all 1.5s forwards"; 
                         }
                     }, 600);
                 } else {
                     setTimeout(() => star.style.animation = "", 600);
                 }
-            }, (index - startIndex) * 200); // 순차적 반짝임 딜레이 (0.1초 간격)
+            }, (index - startIndex) * 200);
         }
     });
-
     showConstellationName(constellationsCnt++);
 }
 
-function animateStarsSequentially() {
-    const stars = document.querySelectorAll('.big-star'); // 모든 큰 별 선택
-    constellationIndex = 0;
-    // 각 별에 순차적으로 grow-all 애니메이션을 적용
-    stars.forEach((star, index) => {
-        setTimeout(() => {
-            star.style.animation = "glow-all 1.5s forwards 1"; // glow-all 애니메이션 한 번 실행
-            showConstellationName(constellationIndex++);
-        }, index * 60); // 0.1초씩 딜레이
-    });
-}
-
-// 별자리가 완성되었을 때 호출되는 함수
+// 별자리가 완성시 이름 생성 
 function showConstellationName(constellationIndex) {
-    const sky = document.querySelector('.sky'); // 밤하늘 영역
+    const sky = document.querySelector('.sky'); 
     const skyWidth = sky.offsetWidth;
     const skyHeight = sky.offsetHeight;
 
-    // 별자리 이름들 배열
     const constellationNames = [
         'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 
         'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'
     ];
 
-    // 각 별자리의 수동 좌표 설정 (x, y)
     const customCoordinates = [
         { x: 0.09, y: 0.23 },   // Aquarius
         { x: 0.55, y: 0.17 },  // Pisces
@@ -773,28 +719,24 @@ function showConstellationName(constellationIndex) {
         { x: 0.733, y: 0.85 }     // Capricorn
     ];
     
-    // 별자리 이름을 표시할 div 생성
     const nameDiv = document.createElement('div');
     nameDiv.classList.add('constellation-name');
     nameDiv.textContent = constellationNames[constellationIndex];
 
-    // 수동으로 지정한 좌표로 계산된 위치
-    const position = customCoordinates[constellationIndex]; // 수동 좌표 가져오기
+    const position = customCoordinates[constellationIndex]; 
     const newX = position.x * skyWidth;
     const newY = position.y * skyHeight;
 
-    // 이름을 해당 좌표에 위치
     nameDiv.style.left = `${newX}px`;
     nameDiv.style.top = `${newY}px`;
 
-    // 이름을 화면에 추가
     sky.appendChild(nameDiv);
 
     setTimeout(() => {
         nameDiv.style.opacity = '1';
-    }, 100); // 잠깐 딜레이 후 효과 시작
+    }, 100); 
 
     setTimeout(() => {
         nameDiv.style.opacity = '0';
-    }, 5000); // 잠깐 딜레이 후 효과 시작
+    }, 5000); 
 }

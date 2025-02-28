@@ -2,46 +2,47 @@ const collectStarsBtn = document.getElementById('collectStarsBtn');
 const closeBtn = document.querySelector('.close-btn'); 
 const categoryContainer = document.getElementById('categoryContainer');
 const timeLeftElement = document.querySelector('.time-left');
+const devModeBtn = document.getElementById("devModeBtn");
+const devModal = document.getElementById("devModal");
 
 let zIndexCounter = 2000;
-let isDeleteMode = false; // 삭제 모드 상태
-let canCreateStar = 1;  // 별을 만들 수 있는지 여부를 나타내는 변수 (1: 가능, 0: 불가능)
+let isDeleteMode = false; 
+let canCreateStar = 1; 
 let onlyCreateStar = 0;
-let isCooldown = false; // 쿨타임 여부를 체크하는 변수
-let isZeroPressed = false; // 0번 키 눌렀는지 체크하는 변수
+let isCooldown = false; 
+let isZeroPressed = false;
 
 // 별 모으기 버튼 클릭 시 투두리스트 표시
 collectStarsBtn.addEventListener('click', () => {
-    todoList.classList.add('show');  // 투두리스트를 화면에 표시
-    collectStarsBtn.style.display = 'none';  // '별 모으기' 글씨 숨기기
+    todoList.classList.add('show'); 
+    collectStarsBtn.style.display = 'none'; 
 });
 
 document.addEventListener('keydown', (e) => {
     if (e.key === ' ') {  
-        todoList.classList.add('show');  // 투두리스트를 화면에 표시
-        collectStarsBtn.style.display = 'none';  // '별 모으기' 글씨 숨기기
+        todoList.classList.add('show'); 
+        collectStarsBtn.style.display = 'none';
     }
 });
 
 // 닫기 버튼 클릭 시 투두리스트 숨기기
 closeBtn.addEventListener('click', () => {
-    todoList.classList.remove('show'); // 투두리스트 숨기기
-    collectStarsBtn.style.display = 'block'; // '별 모으기' 글씨 다시 보이게 하기
+    todoList.classList.remove('show'); 
+    collectStarsBtn.style.display = 'block'; 
 });
 
-// Esc 키 눌렀을 때도 투두리스트 숨기기
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' ) {  // Esc 키가 눌렸을 때
-        todoList.classList.remove('show');  // 투두리스트 숨기기
-        collectStarsBtn.style.display = 'block';  // '별 모으기' 글씨 다시 보이게
-        devModal.style.display = "none"; // 모달 끄기
+    if (e.key === 'Escape' ) {  
+        todoList.classList.remove('show');  
+        collectStarsBtn.style.display = 'block'; 
+        devModal.style.display = "none"; 
     }
 });
 
 // 날짜를 YYYY-MM-DD 형식으로 반환하는 함수
 function getFormattedDate(date) {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
@@ -50,8 +51,6 @@ function getFormattedDate(date) {
 window.addEventListener('load', () => {
     const currentDate = new Date();
     const formattedDate = getFormattedDate(currentDate);
-    
-    // 이미 존재하는 .date-display 요소에 날짜 표시
     const dateDisplay = document.querySelector('.date-display');
     if (dateDisplay) {
         dateDisplay.textContent = formattedDate;
@@ -60,34 +59,30 @@ window.addEventListener('load', () => {
 
 // 날짜를 하루 증가시키는 함수
 function moveToNextDay() {
-    // 날짜가 아직 설정되지 않았으면, 오늘 날짜로 초기화
     if (!window.currentDate) {
-        window.currentDate = new Date();  // 초기 날짜 설정
+        window.currentDate = new Date();  
     }
 
-    // 하루 증가
     window.currentDate.setDate(window.currentDate.getDate() + 1);
 
     const formattedDate = getFormattedDate(window.currentDate);
-    
-    // .date-display 요소에 날짜 표시
     const dateDisplay = document.querySelector('.date-display');
     if (dateDisplay) {
         dateDisplay.textContent = formattedDate;
     }
 }
 
+// 카테고리 버튼 클릭
 document.getElementById('categoryBtn').addEventListener('click', () => {
     const categoryBtn = document.getElementById('categoryBtn');
     const categoryActions = document.getElementById('categoryActions');
 
-    // 카테고리 버튼 클릭 시
     if (categoryBtn.style.display !== 'none') {
-        categoryBtn.style.display = 'none';  // 카테고리 버튼 숨기기
-        categoryActions.style.display = 'flex';  // 추가/삭제 버튼 보이기
+        categoryBtn.style.display = 'none'; 
+        categoryActions.style.display = 'flex';  
     } else {
-        categoryBtn.style.display = 'flex';  // 카테고리 버튼 다시 보이기
-        categoryActions.style.display = 'none';  // 추가/삭제 버튼 숨기기
+        categoryBtn.style.display = 'flex';  
+        categoryActions.style.display = 'none';  
     }
 });
 
@@ -96,10 +91,9 @@ document.addEventListener('click', (event) => {
     const categoryBtn = document.getElementById('categoryBtn');
     const categoryActions = document.getElementById('categoryActions');
     
-    // 카테고리 버튼이나 추가/삭제 버튼이 아닌 곳 클릭 시
     if (!categoryBtn.contains(event.target) && !categoryActions.contains(event.target)) {
         categoryBtn.style.display = 'block';
-        categoryActions.style.display = 'none';  // 추가/삭제 버튼 숨기기
+        categoryActions.style.display = 'none'; 
         isDeleteMode = false;
         updateAddTodoButtons();
     }
@@ -107,18 +101,16 @@ document.addEventListener('click', (event) => {
 
 // 카테고리 블록 삭제
 document.getElementById("deleteCategoryBtn").addEventListener("click", function() {
-    // isDeleteMode 상태를 토글 (true -> false, false -> true)
     isDeleteMode = !isDeleteMode;
     updateAddTodoButtons();
 });
 
+// 카테고리 삭제 상태 업데이트 
 function updateAddTodoButtons() {
     document.querySelectorAll(".add-todo-btn").forEach(button => {
         if (isDeleteMode) {
-            // 삭제 모드일 때: deleteMode 클래스를 추가하여 회전 및 색상 변경
             button.classList.add("deleteMode");
         } else {
-            // 삭제 모드 아닐 때: deleteMode 클래스를 제거하여 원래 상태로 돌아가기
             button.classList.remove("deleteMode");
         }
     });
@@ -128,49 +120,40 @@ function updateAddTodoButtons() {
 document.getElementById('addCategoryBtn').addEventListener('click', () => {
 
     if (isDeleteMode) {
-        isDeleteMode = false;  // 삭제 모드 해제
-        updateAddTodoButtons();  // 버튼 상태 업데이트
+        isDeleteMode = false; 
+        updateAddTodoButtons();  
     }
 
     const categoryContainer = document.getElementById('categoryContainer');
 
-    // 새로운 카테고리 블록 만들기
     const categoryBlock = document.createElement('div');
     categoryBlock.classList.add('category-block');
 
-    // 드래그 핸들 추가
     const cornerHandle = document.createElement('div');
     cornerHandle.classList.add('corner-handle');
 
-    // 입력 필드 생성 (contentEditable)
     const categoryInput = document.createElement('div');
     categoryInput.classList.add('category-input');
     categoryInput.contentEditable = true;
 
-    // 최대 글자 수 설정
-    const maxLength = 20; // 제한할 글자 수 
+    const maxLength = 20; 
 
     categoryBlock.appendChild(categoryInput);
     categoryBlock.appendChild(cornerHandle);
 
     const addTodoBtn = document.createElement('button');
-    addTodoBtn.classList.add('add-todo-btn'); // 클래스 이름 변경
+    addTodoBtn.classList.add('add-todo-btn'); 
     addTodoBtn.innerHTML = '+';
     categoryBlock.appendChild(addTodoBtn);
     categoryContainer.appendChild(categoryBlock);
 
-    // 새로운 블록의 위치 설정 (겹치지 않게)
     positionNewCategoryBlock(categoryBlock, categoryContainer);
-
-    // 생성된 항목에 자동으로 포커스 주기
     categoryInput.focus();
 
     // 입력 제한 처리
     categoryInput.addEventListener('input', (e) => {
         if (categoryInput.textContent.length > maxLength) {
-            // 초과된 글자를 즉시 삭제
             categoryInput.textContent = categoryInput.textContent.substring(0, maxLength);
-            // 커서가 맨 끝으로 가도록 설정
             const range = document.createRange();
             const selection = window.getSelection();
             range.setStart(categoryInput.firstChild || categoryInput, maxLength);
@@ -183,12 +166,12 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     // 엔터 키를 눌렀을 때 입력 확정
     categoryInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // 엔터키 기본 동작 방지
+            e.preventDefault(); 
             if (categoryInput.textContent.trim() === '') {
-                categoryBlock.remove(); // 입력이 없으면 삭제
+                categoryBlock.remove(); 
             } else {
                 categoryInput.textContent = categoryInput.textContent.trim();
-                categoryInput.contentEditable = false; // 입력 확정 후 수정 불가
+                categoryInput.contentEditable = false; 
             }
         }
     });
@@ -208,9 +191,9 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     });
 
     document.addEventListener('click', (e) => {
-        const categoryBlock = e.target.closest('.category-block'); // 클릭한 요소가 블록인지 확인
+        const categoryBlock = e.target.closest('.category-block'); 
         if (categoryBlock) {
-            categoryBlock.style.zIndex = ++zIndexCounter; // 클릭한 블록을 최상위로 설정
+            categoryBlock.style.zIndex = ++zIndexCounter; 
         }
     });
     
@@ -227,11 +210,9 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
             const containerRect = categoryContainer.getBoundingClientRect();
             const blockRect = categoryBlock.getBoundingClientRect();
             
-            // X 좌표가 컨테이너의 왼쪽, 오른쪽 경계를 넘지 않도록 제한
             let newX = pageX - shiftX;
             newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - blockRect.width));
             
-            // Y 좌표가 컨테이너의 위쪽, 아래쪽 경계를 넘지 않도록 제한
             let newY = pageY - shiftY;
             newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - blockRect.height));
             
@@ -254,29 +235,28 @@ document.getElementById('addCategoryBtn').addEventListener('click', () => {
     });    
 });
 
+// 새로운 카테고리 생성 
 function positionNewCategoryBlock(newBlock, container) {
     const blocks = document.querySelectorAll('.category-block');
     const containerRect = container.getBoundingClientRect();
-    const blockSize = 80; // 블록 크기 (조절 가능)
+    const blockSize = 80; 
 
     let x, y;
     let isOverlapping;
     let attempts = 0;
-    const maxAttempts = 50; // 최대 시도 횟수
+    const maxAttempts = 50;
     const centerX = containerRect.width / 2;
     const centerY = containerRect.height / 2;
-    const maxDistance = Math.sqrt(Math.pow(containerRect.width, 2) + Math.pow(containerRect.height, 2)) / 2; // 중심에서 가장 멀리 떨어질 수 있는 거리
+    const maxDistance = Math.sqrt(Math.pow(containerRect.width, 2) + Math.pow(containerRect.height, 2)) / 2; 
 
     do {
         isOverlapping = false;
-        let distanceFromCenter = (attempts / maxAttempts) * maxDistance; // 시도 횟수에 비례해 거리 증가
-        let angle = Math.random() * 2 * Math.PI; // 랜덤한 각도
+        let distanceFromCenter = (attempts / maxAttempts) * maxDistance; 
+        let angle = Math.random() * 2 * Math.PI; 
 
-        // 중심 근처부터 시작해서 점차 바깥쪽으로 이동
         x = centerX + distanceFromCenter * Math.cos(angle);
         y = centerY + distanceFromCenter * Math.sin(angle);
 
-        // 위치가 컨테이너 범위를 벗어나지 않도록 조정
         x = Math.min(Math.max(x, 0), containerRect.width - blockSize);
         y = Math.min(Math.max(y, 0), containerRect.height - blockSize);
 
@@ -295,7 +275,6 @@ function positionNewCategoryBlock(newBlock, container) {
         attempts++;
     } while (isOverlapping && attempts < maxAttempts);
 
-    // 만약 50번 시도 후에도 겹치지 않는 위치를 찾지 못했다면, 그냥 중앙에 배치
     if (isOverlapping) {
         x = centerX - blockSize / 2;
         y = centerY - blockSize / 2;
@@ -321,22 +300,18 @@ function addTodoToCategory(categoryBlock) {
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
 
-    // 체크박스 생성
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
 
-    // 할 일 입력란 생성
     const todoInput = document.createElement('div');
     todoInput.classList.add('todo-input');
     todoInput.contentEditable = true;
-    const maxLength = 30; // 최대 글자 수 설정
+    const maxLength = 30; 
 
-    // "..." 버튼 생성
     const todoAbout = document.createElement('button');
     todoAbout.classList.add('todo-about');
     todoAbout.textContent = '...';
 
-    // 컨텍스트 메뉴 생성
     const menu = document.createElement('div');
     menu.classList.add('todo-menu');
 
@@ -352,29 +327,22 @@ function addTodoToCategory(categoryBlock) {
     deleteButton.classList.add('delete-todo');
     deleteButton.textContent = '삭제';
 
-    // 메뉴에 버튼 추가
     menu.appendChild(editButton);
     menu.appendChild(routineButton);
     menu.appendChild(deleteButton);
 
-    // 체크박스를 할 일 항목에 추가
     todoItem.appendChild(checkbox);
     todoItem.appendChild(todoInput);
     todoItem.appendChild(todoAbout);
     todoItem.appendChild(menu);
 
-    // 할 일 항목을 카테고리 블록에 추가 (맨 위에서 1칸 아래에 추가)
     categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
-
-    // 입력란에 포커스
     todoInput.focus();
 
     // 입력란에서 글자 수 제한 처리
     todoInput.addEventListener('input', (e) => {
         if (todoInput.textContent.length > maxLength) {
-            // 초과된 글자를 즉시 삭제
             todoInput.textContent = todoInput.textContent.substring(0, maxLength);
-            // 커서가 맨 끝으로 가도록 설정
             const range = document.createRange();
             const selection = window.getSelection();
             range.setStart(todoInput.firstChild || todoInput, maxLength);
@@ -387,17 +355,16 @@ function addTodoToCategory(categoryBlock) {
     // 입력란에서 엔터키를 눌렀을 때
     todoInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // 기본 엔터키 동작 방지
+            e.preventDefault(); 
             if (todoInput.textContent.trim() === '') {
-                todoItem.remove(); // 내용이 없으면 삭제
+                todoItem.remove(); 
             } else {
                 todoInput.textContent = todoInput.textContent.trim();
-                todoInput.contentEditable = false; // 입력 확정 후 수정 불가
+                todoInput.contentEditable = false; 
             }
         }
     });
 
-    // 입력란에서 블러 이벤트 발생 시, 텍스트가 없으면 삭제
     todoInput.addEventListener('blur', () => {
         if (todoInput.textContent.trim() === '') {
             todoItem.remove();
@@ -406,46 +373,36 @@ function addTodoToCategory(categoryBlock) {
         }
     });
 
-    // 체크박스를 클릭하면 체크 상태에 따라 항목을 이동 및 스타일 변경
     checkbox.addEventListener('change', () => {
-        const todoItem = checkbox.closest('.todo-item'); // 체크박스를 포함한 부모 항목
+        const todoItem = checkbox.closest('.todo-item'); 
         updateStarButtonBorder();
         if (checkbox.checked) {
-            // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
             categoryBlock.appendChild(todoItem);
-            todoItem.classList.add('checked'); // 스타일 변경
+            todoItem.classList.add('checked'); 
         } else {
-            // 체크가 풀리면 항목을 카테고리 블록의 맨 위에서 1칸 아래로 이동
             categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
-            todoItem.classList.remove('checked'); // 스타일 원래대로 복구
+            todoItem.classList.remove('checked'); 
         }
     });
     
-
     // '⋯' 버튼 클릭 시 메뉴 표시/숨김
     todoAbout.addEventListener('click', (e) => {
-        e.stopPropagation(); // 이벤트 전파 방지
+        e.stopPropagation();
 
-        // '...' 버튼 숨기기
         todoAbout.style.display = 'none';
-
-        // 현재 클릭된 투두만 메뉴 표시, 다른 메뉴는 닫기
         document.querySelectorAll('.todo-item').forEach(item => {
             if (item !== todoItem) {
                 item.classList.remove('show-menu');
             }
         });
-
         todoItem.classList.toggle('show-menu');
     });
 
-    // 다른 곳을 클릭하면 메뉴 닫기
     document.addEventListener('click', () => {
         todoAbout.style.display = 'inline'; 
         todoItem.classList.remove('show-menu');
     });
 
-    // 메뉴 클릭 시 닫히지 않도록 이벤트 전파 방지
     menu.addEventListener('click', (e) => {
         e.stopPropagation();
     });
@@ -468,47 +425,39 @@ function addTodoToCategory(categoryBlock) {
 
     // 루틴 버튼 기능
     routineButton.addEventListener('click', () => {
-        todoItem.isRoutine = !todoItem.isRoutine; // 루틴 상태 토글
+        todoItem.isRoutine = !todoItem.isRoutine; 
         routineButton.classList.toggle('routine-active', todoItem.isRoutine);
-        todoItem.classList.toggle('routine-item', todoItem.isRoutine); // 테두리 변경
+        todoItem.classList.toggle('routine-item', todoItem.isRoutine);
     });
-
 }
 
 // 별 만들기 
 document.querySelector('.create-star-btn').addEventListener('click', function() {
 
     if (canCreateStar === 0) {
-        return; // 자격이 없으면 함수 종료
+        return; 
     }
 
-    // 체크된 투두 항목들을 선택
     const checkedTodos = document.querySelectorAll('.todo-item input[type="checkbox"]:checked');
-    const cnt = checkedTodos.length;  // 체크된 항목의 개수
+    const cnt = checkedTodos.length; 
 
     if (cnt > 0) {
-        // 체크된 항목들에 대해 처리
         checkedTodos.forEach(checkbox => {
-            const todoItem = checkbox.closest('.todo-item'); // 체크박스를 포함한 부모 투두 항목
-            const isRoutine = todoItem.isRoutine; // 루틴 여부 확인 (isRoutine 속성으로 확인)
+            const todoItem = checkbox.closest('.todo-item'); 
+            const isRoutine = todoItem.isRoutine; 
 
             if (isRoutine) {
-                // 루틴인 경우 체크 해제만 하고, 이동 및 스타일 변경
                 checkbox.checked = false;
 
-                // 체크박스 상태에 따른 이동 및 스타일 변경
                 const categoryBlock = todoItem.closest('.category-block');
                 if (checkbox.checked) {
-                    // 체크되면 항목을 카테고리 블록의 맨 아래로 이동
                     categoryBlock.appendChild(todoItem);
-                    todoItem.classList.add('checked'); // 스타일 변경
+                    todoItem.classList.add('checked'); 
                 } else {
-                    // 체크가 풀리면 항목을 카테고리 블록의 맨 위에서 1칸 아래로 이동
                     categoryBlock.insertBefore(todoItem, categoryBlock.firstChild?.nextSibling || categoryBlock.firstChild);
-                    todoItem.classList.remove('checked'); // 스타일 원래대로 복구
+                    todoItem.classList.remove('checked');
                 }
             } else {
-                // 루틴이 아니면 항목을 제거
                 todoItem.remove();
             }
         });
@@ -517,86 +466,71 @@ document.querySelector('.create-star-btn').addEventListener('click', function() 
         if (onlyCreateStar === 0) canCreateStar = 0;
         moveToNextDay();
 
-        // 1초 기다린 후, addStars 실행
         setTimeout(() => {
-            // 투두리스트 숨기기
             const todoList = document.querySelector('.todo-list');
             if (todoList) {
                 todoList.classList.remove('show');
             }
 
-            // '별 모으기' 글씨 다시 보이게 하기
             const collectStarsBtn = document.querySelector('.collect-stars-btn');
             if (collectStarsBtn) {
                 collectStarsBtn.style.display = 'block';
             }
-
-            // addStars 함수 호출
             addStars(cnt);
 
-        }, 500); // 대기 후 실행
+        }, 500);
     }
 });
 
-// 체크된 투두 항목을 감지하여 개수를 확인하는 함수
+// 체크된 투두 항목 개수 확인 
 function updateStarButtonBorder() {
     const checkedTodos = document.querySelectorAll('.todo-item input[type="checkbox"]:checked');
     const starBtnWrapper = document.querySelector('.starBtn-wrapper');
     const createStarBtn = document.querySelector('.create-star-btn');
     
-    // 5개 이상 체크된 항목이 있으면 버튼 스타일을 업데이트
     if (checkedTodos.length >= 5 && canCreateStar === 1) {
         if (starBtnWrapper) {
             starBtnWrapper.style.borderColor = 'rgba(255, 255, 255, 0.6)';
             starBtnWrapper.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.6), 0 0 15px rgba(255, 255, 255, 0.4)';
         }
     } else {
-        // 체크된 항목이 5개 미만이면 버튼 스타일을 원래대로 되돌림
         if (starBtnWrapper) {
             starBtnWrapper.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            starBtnWrapper.style.boxShadow = 'none'; // 그림자 없애기
+            starBtnWrapper.style.boxShadow = 'none'; 
         }
     }
 
-    // 체크된 항목이 0개일 때만 글씨색을 연하게 변경
     if (checkedTodos.length === 0) {
         if (createStarBtn) {
-            createStarBtn.classList.add('disabled'); // disabled 클래스 추가
+            createStarBtn.classList.add('disabled'); 
         }
     } else {
         if (createStarBtn) {
-            createStarBtn.classList.remove('disabled'); // disabled 클래스 제거
+            createStarBtn.classList.remove('disabled'); 
         }
     }
 }
 updateStarButtonBorder();
 
-// 5시까지 남은 시간을 계산하고 표시하는 함수
+// 남은 시간을 표시 함수
 function updateTimeLeft() {
-    // 현재 시간
     const currentTime = new Date();
-
-    // 5시로 설정 (다음날 5시로 계산)
     const targetTime = new Date();
     
-    // 현재 시간이 5시 이후라면, targetTime을 내일 5시로 설정
     if (currentTime.getHours() >= 5) {
-        targetTime.setDate(targetTime.getDate() + 1); // 날짜를 하루 더함
+        targetTime.setDate(targetTime.getDate() + 1); 
     }
-    targetTime.setHours(5, 0, 0, 0); // 5시로 설정
+    targetTime.setHours(5, 0, 0, 0); 
 
-    // 남은 시간 계산
-    const remainingTime = targetTime - currentTime; // 밀리초 단위로 남은 시간
-    const hours = Math.floor(remainingTime / (1000 * 60 * 60)); // 남은 시간(시간)
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)); // 남은 분
-    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000); // 남은 초
+    const remainingTime = targetTime - currentTime; 
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60)); 
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)); 
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000); 
 
-    // 두 자릿수로 포맷팅 (예: 5 -> 05)
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
 
-    // 남은 시간 표시
     timeLeftElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 
     if (hours === 0 && minutes === 0 && seconds === 0) {
@@ -604,7 +538,6 @@ function updateTimeLeft() {
         updateStarButtonBorder();
     }
 
-    // 별 만들기 버튼 비활성화 효과
     const createStarBtn = document.querySelector('.create-star-btn');
     if (canCreateStar === 0) {
         createStarBtn.classList.add('disabledTime');
@@ -614,30 +547,24 @@ function updateTimeLeft() {
         timeLeftElement.style.display = 'none';
     }
 }
-// 매초마다 남은 시간 업데이트
+
 setInterval(updateTimeLeft, 1000);
-
-// 처음 로드 시에도 즉시 남은 시간 표시
 updateTimeLeft();
-
-// 개발자 모드 버튼과 모달 요소
-const devModeBtn = document.getElementById("devModeBtn");
-const devModal = document.getElementById("devModal");
 
 // 개발자 모드 버튼 클릭 시 모달 열기
 devModeBtn.onclick = function() {
-    devModal.style.display = "flex"; // 모달 표시 (flex로 중앙 정렬)
-    devModal.style.pointerEvents = "auto"; // 모달 배경 클릭도 가능하게 설정
+    devModal.style.display = "flex"; 
+    devModal.style.pointerEvents = "auto"; 
 }
 
 // 모달 밖을 클릭하면 모달 닫기
 window.onclick = function(event) {
-    if (event.target === devModal) { // 클릭된 요소가 모달 바깥일 때
-        devModal.style.display = "none"; // 모달 숨기기
+    if (event.target === devModal) { 
+        devModal.style.display = "none"; 
     }
 }
 
-// 개발자 모드 스위치 
+// 개발자 모드 기능  
 document.addEventListener("DOMContentLoaded", () => {
     const starLimitToggle = document.getElementById("starLimitToggle");
     const dateToggle = document.getElementById("dateToggle");
@@ -648,7 +575,6 @@ document.addEventListener("DOMContentLoaded", () => {
      document.addEventListener("keydown", (event) => {
         if (!shortcutToggle.checked) return;
     
-        // 쿨타임 중이면 함수 종료
         if (!isCooldown) {
             switch (event.key) {
                 case "8":
@@ -659,17 +585,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
                 case "0":
                     if (isZeroPressed) {
-                        // 이미 0번 키가 눌렸다면 아무 동작도 하지 않음
                         return;
                     }
                     addConstellations();
-                    isZeroPressed = true; // 0번 키 눌렸음을 기록
+                    isZeroPressed = true; 
                     break;
             }
-            // 쿨타임 시작
             isCooldown = true;
         
-            // 쿨타임이 끝나면 다시 활성화
             setTimeout(() => {
                 isCooldown = false;
             }, 2000);

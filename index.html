@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moonlight</title>
+
     <!-- 구글 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,10 +14,13 @@
     <link rel="stylesheet" href="css/stars.css"> <!-- 별 관련 스타일시트 -->
 </head>
 <body>
+    <!-- 뒷 배경 -->
+    <div class="background"></div>
+
     <!-- 밤하늘 배경 -->
     <div class="sky">
         <div id="moon"></div> <!-- 달 -->
-        <div class="center-light"></div>
+        <div class="center-light"></div> <!-- 달 효과 -->
     </div>
     
     <!-- 땅 배경 -->
@@ -31,9 +35,9 @@
         <!-- 투두리스트 닫기 버튼-->
         <span class="close-btn">×</span>
 
-        <!-- 버튼들을 감싸는 컨테이너 -->
+        <!-- 버튼 컨테이너 -->
         <div class="button-container">
-            <!-- 별 만들기 버튼 추가 -->
+            <!-- 별 만들기 버튼 -->
             <div class="starBtn-wrapper">
                 <div class="time-left"></div>
                 <button id="createStarBtn" class="create-star-btn">별 만들기</button>
@@ -48,7 +52,7 @@
                 </div>
             </div>
 
-            <!-- 개발자 버튼 추가 -->
+            <!-- 개발자 버튼 -->
             <div class="devBtn-wrapper">
                 <button id="devModeBtn" class="dev-mode-btn">&lt;/&gt;</button>
             </div>
@@ -63,7 +67,7 @@
                     아래 기능을 켜서 원하는 설정을 적용해 보세요.
                 </p>
 
-                <!-- 별 만들기 제한 토글 -->
+                <!-- 별 만들기 제한 해제 토글 -->
                 <div class="feature-toggle">
                     <div class="feature-toggle-header">
                         <label for="starLimitToggle">별 만들기 제한 해제</label>
@@ -89,7 +93,7 @@
                     </p>
                 </div>
 
-                <!-- 단축키 토글 -->
+                <!-- 별 생성 단축키 토글 -->
                 <div class="feature-toggle">
                     <div class="feature-toggle-header">
                         <label for="shortcutToggle">별 생성 단축키</label>

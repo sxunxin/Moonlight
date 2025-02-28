@@ -7,6 +7,15 @@ body, html {
     overflow: hidden;
 }
 
+/* 뒷 배경 */
+.background {
+    position: absolute;
+    background-color: #1b041e;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+}
+
 /* 밤하늘 배경 */
 .sky {
     position: relative;
@@ -19,20 +28,21 @@ body, html {
 }
 
 
-/* 땅 배경 (이미지 사용) */
+/* 땅 배경 */
 .ground {
     position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 20vh; /* 높이를 줄여 조정 */
+    height: 20vh; 
     background-color: #1b041e;
     background-image: url("/images/ground.png");
-    background-size: 100% 340%; /* 가로 크기는 자동, 세로 크기를 100%로 조정 */
+    background-size: 100% 340%;
     background-position: center bottom;
     z-index: -1;
 }
 
+/* 작은 별 반찍이는 효과 */
 @keyframes twinkle {
     0% {
         opacity: 0.2;
@@ -45,6 +55,8 @@ body, html {
     }
 }
 
+/* 기본 별 */
+/* 자세한 스타일은 js에서 변경 */
 .star {
     position: absolute;
     background-color: white;
@@ -52,6 +64,7 @@ body, html {
     animation: twinkle 2s infinite alternate;
 }
 
+/* 별자리 완성 효과1 */
 @keyframes glow {
     0% {
         box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.6);
@@ -67,6 +80,7 @@ body, html {
     }
 }
 
+/* 별자리 완성 효과2 */
 @keyframes glow-all {
     50% { 
         transform: scale(1.4); 
@@ -78,30 +92,31 @@ body, html {
     }
 }
 
+/* 달빛 */
 .center-light {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 230px; /* 빛의 크기 */
-    height: 230px; /* 빛의 크기 */
-    background-color: rgba(255, 255, 255, 0.1); /* 흰색으로 부드러운 빛 효과 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    box-shadow: 0 0 150px 10px rgba(255, 255, 255, 0.2); /* 빛이 퍼지는 효과 */
-    transform: translate(-50%, -50%); /* 중앙 정렬 */
-    opacity: 0; /* 처음에는 보이지 않게 설정 */
-    transition: opacity 1s ease-in-out; /* 부드럽게 보이도록 전환 효과 추가 */
+    width: 0.1vw;
+    height: 0.1vw; 
+    background-color: rgba(255, 255, 255, 0.112); 
+    border-radius: 50%; 
+    box-shadow: 0 0 2400px 120px rgba(255, 255, 255, 0.16);
+    transform: translate(-50%, -50%); 
+    opacity: 0; 
+    transition: opacity 1s ease-in-out;
 }
 
+/* 별자리 이름 */
 .constellation-name {
     position: absolute;
     color: rgba(255, 255, 255, 0.52);
     padding: 5px 10px;
     font-size: 23px;
     font-weight: 100;
-    opacity: 0; /* 처음에는 보이지 않음 */
-    transition: opacity 1s ease-in-out; /* 부드럽게 나타나게 하는 효과 */
+    opacity: 0; 
+    transition: opacity 1s ease-in-out; 
     user-select: none; 
-    /* 텍스트 그림자 추가 */
     text-shadow: 4px 4px 20px rgba(255, 255, 255, 0.7), 
                  -4px -4px 20px rgba(255, 255, 255, 0.7);
 }
