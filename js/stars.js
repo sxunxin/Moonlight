@@ -13,9 +13,9 @@ let PiscesX = 0.035, PiscesY = -0.22;
 let AriesX = -0.24, AriesY = 0.35;
 let TaurusX = 0.38, TaurusY = -0.08;
 let GeminiX = -0.45, GeminiY = 0.07;
-let CancerX = 0.16, CancerY = -0.01;
+let CancerX = 0.174, CancerY = -0.01;
 let LeoX = -0.13, LeoY = -0.34;
-let VirgoX = 0.03, VirgoY = 0.25;
+let VirgoX = 0.03, VirgoY = 0.28;
 let LibraX = -0.02, LibraY = 0.14;
 let ScorpioX = 0.02, ScorpioY = 0.03;
 let SagittariusX = -0.02, SagittariusY = -0.2;
@@ -671,8 +671,8 @@ function addConstellations() {
         bigStar.style.top = `${skyHeight / 2 - 10}px`;
 
         // 큰 별 스타일
-        bigStar.style.width = '8px'; // 더 큼
-        bigStar.style.height = '8px';
+        bigStar.style.width = '6px'; // 더 큼
+        bigStar.style.height = '6px';
         bigStar.style.backgroundColor = 'white';
         bigStar.style.borderRadius = '50%';
 
@@ -764,9 +764,9 @@ function showConstellationName(constellationIndex) {
         { x: 0.2, y: 0.88 },   // Aries
         { x: 0.842, y: 0.57 },   // Taurus
         { x: 0.12, y: 0.64 },   // Gemini
-        { x: 0.68, y: 0.53 },   // Cancer
+        { x: 0.69, y: 0.53 },   // Cancer
         { x: 0.32, y: 0.1 },  // Leo
-        { x: 0.51, y: 0.85 },    // Virgo
+        { x: 0.51, y: 0.9 },    // Virgo
         { x: 0.31, y: 0.69 },   // Libra
         { x: 0.233, y: 0.35 },    // Scorpio
         { x: 0.83, y: 0.35 },   // Sagittarius
@@ -798,6 +798,3 @@ function showConstellationName(constellationIndex) {
         nameDiv.style.opacity = '0';
     }, 5000); // 잠깐 딜레이 후 효과 시작
 }
-
-// 테스트용 코드 
-// addConstellations();
